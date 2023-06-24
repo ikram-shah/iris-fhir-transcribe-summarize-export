@@ -1,3 +1,12 @@
+    zn "%SYS"
+    Do ##class(Security.Users).UnExpireUserPasswords("*")
+    set props("AutheEnabled") = 64
+    set props("NameSpace") = "FHIRSERVER"
+    set props("IsNameSpaceDefault") = 0
+    set props("DispatchClass") = "User.Dispatch"
+    set props("MatchRoles")=":%All"
+    zw ##class(Security.Applications).Create("/fhir/api" , .props)
+    
     zn "USER"
     zpm "load /home/irisowner/irisdev/ -v":1:1
     zpm "install fhir-portal"

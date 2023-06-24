@@ -46,10 +46,10 @@ ClassMethod AddApp(ns={$namespace}) As %Status
 {
     set namespace=ns
     zn "%SYS"
-    set webName = "/fhirUI" 
+    set webName = "/ui" 
     set webProperties("NameSpace") = namespace 
     set webProperties("Enabled") = 1 
-    set webProperties("Path") = "/irisdev/app/fhirUI"
+    set webProperties("Path") = "/irisdev/app/ui"
     set webProperties("AutheEnabled") = 64 
     set webProperties("ServeFiles")=2
     set webProperties("Recurse")=1

@@ -8,18 +8,31 @@
       <Keywords>FHIR,Server</Keywords>
       <Packaging>module</Packaging>
     <SourcesRoot>src</SourcesRoot>
+    <FileCopy Name="python/" Target="${mgrdir}python/"/>   
     <Invokes>
     <Invoke Class="fhirtemplate.Setup" Method="SetupFHIRServer" Phase="Activate" When="After" ></Invoke>
+    <Invoke Class="fhirtemplate.FhirClient" Method="Init"></Invoke>
     </Invokes>
     <Resource Name="fhirtemplate.PKG"/>
     <FileCopy Name="data/fhir/" Target="${mgrdir}test-data-fhir/"/>
       <CSPApplication
-        Url="/fhirUI"
-        SourcePath="/fhirUI"
-        DeployPath="{$cspdir}/fhirUI"
+        Url="/ui"
+        SourcePath="/ui"
+        DeployPath="{$cspdir}/ui"
         ServeFiles="1"
         Recurse="1"
-        CookiePath="/fhirUI"
+        CookiePath="/ui"
+       />
+       <CSPApplication 
+        Url="/fhir/api"
+        Recurse="1"
+        MatchRoles=":${dbrole}"
+        PasswordAuthEnabled="1"
+        UnauthenticatedEnabled="0"
+        DispatchClass="fhirtemplate.FhirRest"
+        ServeFiles="1"
+        CookiePath="/fhir/api"
+        UseCookies="2"
        />
     </Module>
   </Document>

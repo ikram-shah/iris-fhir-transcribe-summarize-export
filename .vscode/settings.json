@@ -1,38 +1,36 @@
 {
-    "files.associations": {
-    
-        "Dockerfile*": "dockerfile",
-        "iris.script": "objectscript"
-      },
-    "objectscript.conn" :{
-      "ns": "FHIRSERVER",
-      "active": true,
-      "username": "_SYSTEM",
-      "password": "SYS",
-      "docker-compose": {
-        "service": "iris",
-        "internalPort": 52773
-      },
-      "links": {
-        "FHIR UI Portal": "http://localhost:${port}/fhir/portal/patientlist.html",
-        "FHIR UI Demo": "http://localhost:${port}/fhirUI/FHIRAppDemo.html",
-        "FHIR server test": "http://localhost:${port}/fhir/r4/metadata"
-      }
+  "files.associations": {
+    "Dockerfile*": "dockerfile",
+    "iris.script": "objectscript"
+  },
+  "objectscript.conn": {
+    "ns": "FHIRSERVER",
+    "active": false,
+    "username": "_SYSTEM",
+    "password": "SYS",
+    "docker-compose": {
+      "service": "iris",
+      "internalPort": 52773
     },
-    "sqltools.connections": [
-      {
-        "askForPassword": false,
-        "connectionMethod": "Server and Port",
-        "driver": "InterSystems IRIS",
-        "name": "iris-fhir-template",
-        "namespace": "FHIRSERVER",
-        "password": "SYS",
-        "port": 32783,
-        "previewLimit": 50,
-        "server": "localhost",
-        "showSystem": false,
-        "username": "_SYSTEM"
-      }
-    ]
-
+    "links": {
+      "FHIR UI Portal": "http://localhost:${port}/fhir/portal/patientlist.html",
+      "FHIR UI Demo": "http://localhost:${port}/ui/FHIRAppDemo.html",
+      "FHIR server test": "http://localhost:${port}/fhir/r4/metadata"
+    }
+  },
+  "sqltools.connections": [
+    {
+      "askForPassword": false,
+      "connectionMethod": "Server and Port",
+      "driver": "InterSystems IRIS",
+      "name": "iris-fhir-template",
+      "namespace": "FHIRSERVER",
+      "password": "SYS",
+      "port": 32783,
+      "previewLimit": 50,
+      "server": "localhost",
+      "showSystem": false,
+      "username": "_SYSTEM"
+    }
+  ]
 }
