@@ -16,12 +16,12 @@
     <Resource Name="fhirtemplate.PKG"/>
     <FileCopy Name="data/fhir/" Target="${mgrdir}test-data-fhir/"/>
       <CSPApplication
-        Url="/ui"
-        SourcePath="/ui"
-        DeployPath="{$cspdir}/ui"
+        Url="/ui/dist/"
+        SourcePath="/ui/dist/"
+        DeployPath="{$cspdir}/ui/dist/"
         ServeFiles="1"
         Recurse="1"
-        CookiePath="/ui"
+        CookiePath="/ui/dist/"
        />
        <CSPApplication 
         Url="/fhir/api"

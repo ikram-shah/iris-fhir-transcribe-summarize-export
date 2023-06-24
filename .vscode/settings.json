@@ -14,7 +14,7 @@
     },
     "links": {
       "FHIR UI Portal": "http://localhost:${port}/fhir/portal/patientlist.html",
-      "FHIR UI Demo": "http://localhost:${port}/ui/FHIRAppDemo.html",
+      "FHIR UI Demo": "http://localhost:${port}/ui/dist/index.html",
       "FHIR server test": "http://localhost:${port}/fhir/r4/metadata"
     }
   },
