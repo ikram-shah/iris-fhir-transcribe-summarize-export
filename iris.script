@@ -9,9 +9,7 @@
     
     zn "USER"
     zpm "load /home/irisowner/irisdev/ -v":1:1
-    zpm "install fhir-portal"
     halt
-    /// the below is not important anymore. 
     
     zn "HSLIB"
     set namespace="FHIRSERVER"
@@ -40,5 +38,4 @@
     zw ##class(HS.FHIRServer.Tools.DataLoader).SubmitResourceFiles("/opt/irisapp/fhirdata/", "FHIRServer", appKey)
 
     do $System.OBJ.LoadDir("/opt/irisapp/src","ck",,1)
-    //zpm "install fhir-portal"
     halt

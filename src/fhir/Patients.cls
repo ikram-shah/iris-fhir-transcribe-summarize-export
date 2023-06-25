@@ -1,4 +1,4 @@
-Class fhirtemplate.FhirRest Extends %CSP.REST
+Class fhir.Patients Extends %CSP.REST
 {
 
 XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
@@ -14,7 +14,7 @@ ClassMethod getAllPatients() As %Status
 
     Set tSC = $SYSTEM.Status.OK()
 
-    Set patientsString = ##class(fhirtemplate.FhirClient).GetResource("Patient")
+    Set patientsString = ##class(fhir.dc.FhirClient).GetResource("Patient")
 
     Write patientsString
 

@@ -16,12 +16,19 @@ Auth header is basic auth. Username - SuperUser, Password - SYS
 
 ```
 curl --location 'http://localhost:52773/fhir/api/patient/all' \
---header 'Authorization: Basic U3VwZXJVc2VyOlNZUw==' \
---header 'Cookie: CSPSESSIONID-SP-32783-UP-fhir-api-=006000000000UJ3gJ4P9SPaW83TIG7l10zzUYAYBJquyO913L7; CSPWSERVERID=hA0TLhQP'
+--header 'Authorization: Basic U3VwZXJVc2VyOlNZUw=='
 ```
 
-### UI build
+### Build UI
 
 ```
 npm run build
+```
+
+## IRIS commands
+Uncomment `print(rows)` in [irisfhirclient](src/python/irisfhirclient.py) to view results
+```
+docker-compose exec iris iris session iris
+do ##class(fhir.dc.FhirClient).GetResource("Patient")
+do ##class(fhir.dc.FhirClient).GetPatientResources("Observation","a5b737fb-1f94-4767-802b-1112051f5101")
 ```

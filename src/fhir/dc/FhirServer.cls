@@ -1,4 +1,4 @@
-Class fhirtemplate.FhirServer Extends %Persistent
+Class fhir.dc.FhirServer Extends %Persistent
 {
 
 Property ServerName As %String;
@@ -28,11 +28,11 @@ Storage Default
 <Value>EndpointOAuth</Value>
 </Value>
 </Data>
-<DataLocation>^fhirtemplate.FhirServerD</DataLocation>
+<DataLocation>^fhir.dc.FhirServerD</DataLocation>
 <DefaultData>FhirServerDefaultData</DefaultData>
-<IdLocation>^fhirtemplate.FhirServerD</IdLocation>
-<IndexLocation>^fhirtemplate.FhirServerI</IndexLocation>
-<StreamLocation>^fhirtemplate.FhirServerS</StreamLocation>
+<IdLocation>^fhir.dc.FhirServerD</IdLocation>
+<IndexLocation>^fhir.dc.FhirServerI</IndexLocation>
+<StreamLocation>^fhir.dc.FhirServerS</StreamLocation>
 <Type>%Storage.Persistent</Type>
 }
 
