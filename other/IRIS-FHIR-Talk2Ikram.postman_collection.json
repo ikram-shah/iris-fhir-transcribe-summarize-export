@@ -1,0 +1,304 @@
+{
+	"info": {
+		"_postman_id": "bc8a3734-1244-4f2f-adbf-7d025a83f3a7",
+		"name": "IRIS-FHIR-Talk2Ikram",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2168342"
+	},
+	"item": [
+		{
+			"name": "FHIR",
+			"item": [
+				{
+					"name": "get patient resources",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:52773/fhir/r4/Patient/1/Observation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "52773",
+							"path": [
+								"fhir",
+								"r4",
+								"Patient",
+								"1",
+								"Observation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create document",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/fhir+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resourceType\": \"DocumentReference\",\n    \"author\": [\n        {\"reference\": \"Practitioner/3\"}\n    ],\n    \"subject\": {\n        \"reference\": \"Patient/1\"\n    },\n    \"status\": \"current\",\n    \"content\": [\n        {\n            \"attachment\": {\n                \"contentType\": \"application/pdf\",\n                \"data\": \"JVBERi0fvffvfjQKJdPr6\"\n            }\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:52773/fhir/r4/DocumentReference",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "52773",
+							"path": [
+								"fhir",
+								"r4",
+								"DocumentReference"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get document references of a patient",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:52773/fhir/r4/Patient/1/DocumentReference",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "52773",
+							"path": [
+								"fhir",
+								"r4",
+								"Patient",
+								"1",
+								"DocumentReference"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "REST",
+			"item": [
+				{
+					"name": "create document reference",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "SYS",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "SuperUser",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": " vgbvg",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/fhir+json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"patientId\": 1,\n    \"practitionerId\": 3,\n    \"base64payload\": \"wakeupikram\",\n    \"mimeType\": \"application/pdf\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:52773/fhir/api/documentreference",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "52773",
+							"path": [
+								"fhir",
+								"api",
+								"documentreference"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all patients",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "SYS",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "SuperUser",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": " vgbvg",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/fhir+json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:52773/fhir/api/patient/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "52773",
+							"path": [
+								"fhir",
+								"api",
+								"patient",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Patient documents",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "SYS",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "SuperUser",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:52773/fhir/api/patient/1/DocumentReference",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "52773",
+							"path": [
+								"fhir",
+								"api",
+								"patient",
+								"1",
+								"DocumentReference"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Patient Observations",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "SYS",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "SuperUser",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:52773/fhir/api/patient/1/Observation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "52773",
+							"path": [
+								"fhir",
+								"api",
+								"patient",
+								"1",
+								"Observation"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

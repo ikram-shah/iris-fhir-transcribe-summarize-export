@@ -31,7 +31,7 @@ ClassMethod GetResource(resource As %String, searchParm = "", searchVal = "") As
 	{  
 	  //Call Embedded Python Function to get requested resource
 	  Set irisfhirclient = ##class(%SYS.Python).Import("irisfhirclient")
-	  Set data = irisfhirclient.GetResource(resource,searchParm,searchVal,obj.Endpoint,obj.ApiKey) 
+	  Set data = irisfhirclient.GetResource(resource, searchParm, searchVal, obj.Endpoint, obj.ApiKey) 
 	}
   	Else
   	{ 
@@ -51,7 +51,26 @@ ClassMethod GetPatientResources(resource As %String, patientId As %Integer) As %
 	{  
 	  //Call Embedded Python Function to get patient resources
 	  Set irisfhirclient = ##class(%SYS.Python).Import("irisfhirclient")
-	  Set data = irisfhirclient.GetPatientResources(resource,patientId,obj.Endpoint,obj.ApiKey) 
+	  Set data = irisfhirclient.GetPatientResources(resource, patientId, obj.Endpoint, obj.ApiKey) 
+	}
+  	Else
+  	{ 
+  		Quit "Unable to fetch server info"
+  	}
+
+	Return data
+}
+
+//  Get Patient Resources List 
+ClassMethod CreateDocumentForPatient(patientId As %Integer, practitionerId As %Integer, base64payload As %String, mimeType As %String) As %Status
+{
+	Set obj = ##class(fhir.dc.FhirServer).%OpenId(1)
+
+	If $ISOBJECT(obj)  
+	{  
+	  //Call Embedded Python Function to get patient resources
+	  Set irisfhirclient = ##class(%SYS.Python).Import("irisfhirclient")
+	  Set data = irisfhirclient.CreateDocumentForPatient(patientId, practitionerId, base64payload, mimeType, obj.Endpoint, obj.ApiKey) 
 	}
   	Else
   	{ 

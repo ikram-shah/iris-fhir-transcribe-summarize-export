@@ -34,4 +34,5 @@ Uncomment `print(rows)` in [irisfhirclient](src/python/irisfhirclient.py) to vie
 docker-compose exec iris iris session iris
 do ##class(fhir.dc.FhirClient).GetResource("Patient")
 do ##class(fhir.dc.FhirClient).GetPatientResources("Observation","1")
+do ##class(fhir.dc.FhirClient).CreateDocumentForPatient(1, 3, "blablabla", "application/pdf")
 ```
