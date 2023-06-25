@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-  <Document name="fhir-server.ZPM">
+  <Document name="transcribe-summarize-export.ZPM">
     <Module>
-      <Name>fhir-server</Name>
+      <Name>transcribe-summarize-export</Name>
       <Version>1.2.1</Version>
       <Description>InterSystems FHIR Server with a demo frontend</Description>
       <Keywords>FHIR,Server</Keywords>
@@ -10,18 +10,18 @@
     <SourcesRoot>src</SourcesRoot>
     <FileCopy Name="src/python/" Target="${mgrdir}python/"/>   
     <Invokes>
-    <Invoke Class="fhir.setup..Setup" Method="SetupFHIRServer" Phase="Activate" When="After" ></Invoke>
+    <Invoke Class="fhir.setup.Setup" Method="SetupFHIRServer" Phase="Activate" When="After" ></Invoke>
     <Invoke Class="fhir.dc.FhirClient" Method="Init"></Invoke>
     </Invokes>
     <Resource Name="fhir.PKG"/>
     <FileCopy Name="data/fhir/" Target="${mgrdir}test-data-fhir/"/>
       <CSPApplication
-        Url="/ui/dist/"
-        SourcePath="/ui/dist/"
-        DeployPath="{$cspdir}/ui/dist/"
+        Url="/talk2doc/"
+        SourcePath="/src/vue/dist/"
+        DeployPath="{$cspdir}/src/vue/dist/"
         ServeFiles="1"
         Recurse="1"
-        CookiePath="/ui/dist/"
+        CookiePath="/talk2doc/"
        />
        <CSPApplication 
         Url="/fhir/api"

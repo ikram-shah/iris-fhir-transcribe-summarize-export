@@ -10,5 +10,5 @@ RUN pip3 install tabulate
 # run iris and initial 
 RUN --mount=type=bind,src=.,dst=. \
     iris start IRIS && \
-    iris session IRIS < iris.script && \
+    iris session IRIS < scripts/iris.script && \
     iris stop IRIS quietly

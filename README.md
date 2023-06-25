@@ -1,12 +1,13 @@
-## Build and run
+# IRIS FHIR Transcribe-Summarize-Export
 
+## Build and run
 ```
-./rebuild.sh
+./scripts/rebuild.sh
 ```
 
 ## Links
 
-1. UI - http://localhost:52773/ui/dist/index.html
+1. UI - http://localhost:52773/talk2doc/index.html
 2. Backend - http://localhost:52773/fhir/api/patient/all
 3. FHIR server - http://localhost:52773/fhir/r4/Patient
 
@@ -19,10 +20,12 @@ curl --location 'http://localhost:52773/fhir/api/patient/all' \
 --header 'Authorization: Basic U3VwZXJVc2VyOlNZUw=='
 ```
 
-### Build UI
+### Build and Run Vue app
 
 ```
+npm install
 npm run build
+npm run serve
 ```
 
 ## IRIS commands
@@ -30,5 +33,5 @@ Uncomment `print(rows)` in [irisfhirclient](src/python/irisfhirclient.py) to vie
 ```
 docker-compose exec iris iris session iris
 do ##class(fhir.dc.FhirClient).GetResource("Patient")
-do ##class(fhir.dc.FhirClient).GetPatientResources("Observation","a5b737fb-1f94-4767-802b-1112051f5101")
+do ##class(fhir.dc.FhirClient).GetPatientResources("Observation","1")
 ```

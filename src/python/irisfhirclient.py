@@ -5,35 +5,32 @@ from fhirpy.base.searchset import Raw
 import requests
 
 contentType = "application/fhir+json"
-
-#Get Table header based on resource
-def GetTableHeader(resource):
-    if resource == "Patient":
-        header = ["ID","Family Name","Given Name","DOB","Gender"]
-    elif resource == "Observation":
-        header = ["ID","Category","Code","Value","UOM","Date","Patient"]
-    else:
-        header = "NA"
-    return header
     
 #Function to get data in rows format
-def GetTableData(resource,data,opt):
+def FormatResource(resource,data,opt):
     rows = []
     if opt == 1: #Get Rows Data
         if resource == "Patient":
             for rowval in data:
-                row = [rowval.get('id'),rowval.get_by_path('name.0.family'),rowval.get_by_path('name.0.given.0'),rowval.get_by_path('birthDate'),rowval.get_by_path('gender')]
+                row = {
+                    "id": rowval.get('id'),
+                    "lastName": rowval.get_by_path('name.0.family'),
+                    "firstName": rowval.get_by_path('name.0.given.0'),
+                    "birthDate": rowval.get_by_path('birthDate'),
+                    "gender": rowval.get_by_path('gender')
+                }
                 rows.append(row)
         elif resource == "Observation":
             for rowval in data:
-                row = [rowval.get('id'),
-                rowval.get_by_path('category.0.coding.0.code'),
-                rowval.get_by_path('code.coding.0.code'),
-                rowval.get_by_path('valueQuantity.value'),
-                rowval.get_by_path('valueQuantity.code'),
-                rowval.get('effectiveDateTime'),
-                rowval.get_by_path('subject.reference')
-                ,]
+                row = {
+                    "id": rowval.get('id'),
+                    "category": rowval.get_by_path('category.0.coding.0.code'),
+                    "code": rowval.get_by_path('code.coding.0.code'),
+                    "value": rowval.get_by_path('valueQuantity.value'),
+                    "uom": rowval.get_by_path('valueQuantity.code'),
+                    "date": rowval.get('effectiveDateTime'),
+                    "patientId": rowval.get_by_path('subject.reference')
+                }
                 rows.append(row)    
     return rows
 
@@ -53,9 +50,9 @@ def GetResource(resource,searchFor,searchVal,url,api_key):
     except Exception as e:
         print("Error :" + str(e))    
           
-    rows = GetTableData(resource,data,1)
+    rows = FormatResource(resource,data,1)
     #print(rows)
-    return str(rows)
+    return json.dumps(rows)
     
 #3-Print resource agaisnt Patient
 def GetPatientResources(resource,patientId,url,api_key):
@@ -64,13 +61,10 @@ def GetPatientResources(resource,patientId,url,api_key):
     try:
         data = cclient.resources(resource).search(patient=patientId).fetch()
     except:
-        print("Not able to get Resource Information") 
+        print("Unable to get Resource Type") 
         return    
-    header = GetTableHeader(resource)
-    if header == "NA":
-        print(data)
-    rows = GetTableData(resource,data,1)
+    rows = FormatResource(resource,data,1)
     #print(rows)
-    return rows
+    return json.dumps(rows)
   
         
