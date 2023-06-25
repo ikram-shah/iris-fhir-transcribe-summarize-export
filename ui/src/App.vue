@@ -1,18 +1,30 @@
-<script setup>
-import { ref } from 'vue';
-const patients = ref(null);
-const requestOptions = {
-  method: "GET",
-  headers: { "Authorization": "Basic " + btoa(unescape(encodeURIComponent("SuperUser" + ':' + "SYS"))) },
-};
-fetch('http://localhost:52773/fhir/api/patient/all', requestOptions)
-  .then(response => response.json())
-  .then(data => patients.value = data);
-</script>
-
 <template>
-  <h3>Patients</h3>
-  <p>
-    {{ patients.value }}
-  </p>
+  <div class="container mx-auto p-4">
+    <div class="flex justify-center gap-64 items-center mb-4">
+      <HeaderContent />
+      <FhirServerDropdown />
+    </div>
+    <br/>
+    <PatientDropdown />
+    <PatientProfile />
+    <VoiceRecorder />
+  </div>
 </template>
+
+<script>
+import HeaderContent from "./components/HeaderContent.vue";
+import PatientDropdown from "./components/PatientDropdown.vue";
+import FhirServerDropdown from "./components/FhirServerDropdown.vue";
+import PatientProfile from "./components/PatientProfile.vue";
+import VoiceRecorder from "./components/VoiceRecorder.vue";
+
+export default {
+  components: {
+    HeaderContent,
+    PatientDropdown,
+    FhirServerDropdown,
+    PatientProfile,
+    VoiceRecorder,
+  },
+};
+</script>

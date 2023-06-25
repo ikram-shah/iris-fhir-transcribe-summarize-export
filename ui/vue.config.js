@@ -1,16 +1,27 @@
-const { defineConfig } = require('@vue/cli-service')
+const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
   transpileDependencies: true,
   css: {
     extract: {
-      filename: '[name].css',
-      chunkFilename: '[name].css',
+      filename: "[name].css",
+      chunkFilename: "[name].css",
     },
   },
   configureWebpack: {
     output: {
-      filename: '[name].js',
-      chunkFilename: '[name].js',
-    }
-  }
-})
+      filename: "[name].js",
+      chunkFilename: "[name].js",
+    },
+  },
+  devServer: {
+    proxy: {
+      "/fhir": {
+        target: "http://localhost:52773",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/fhir": "/fhir",
+        },
+      },
+    },
+  },
+});
