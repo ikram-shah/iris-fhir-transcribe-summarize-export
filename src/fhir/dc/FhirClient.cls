@@ -80,4 +80,23 @@ ClassMethod CreateDocumentForPatient(patientId As %Integer, practitionerId As %I
 	Return data
 }
 
+
+ClassMethod ExportDocument(patientId As %Integer, docId As %Integer, token As %String) As %Status
+{
+	Set obj = ##class(fhir.dc.FhirServer).%OpenId(1)
+
+	If $ISOBJECT(obj)  
+	{  
+	  //Call Embedded Python Function to export document
+	  Set irisfhirclient = ##class(%SYS.Python).Import("documentexport")
+	  Set data = irisfhirclient.CreateGoogleDoc(patientId, docId, token) 
+	}
+  	Else
+  	{ 
+  		Quit "Unable to fetch server info"
+  	}
+
+	Return data
+}
+
 }

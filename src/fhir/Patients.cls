@@ -7,6 +7,7 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <Route Url="/patient/all" Method="GET" Call="getAllPatients" Cors="true"/>
 <Route Url="/documentreference" Method="POST" Call="createDocument" Cors="true"/>
 <Route Url="/patient/:patientId/:resource" Method="GET" Call="getPatientResource" Cors="true"/>
+<Route Url="/exportDocument" Method="POST" Call="exportDocument" Cors="true"/>
 </Routes>
 }
 
@@ -34,7 +35,7 @@ ClassMethod createDocument() As %Status
 		Quit $$$OK
 	}
 	
-	If '..ValidateJSON(obj,.error) {
+	If '..ValidateJSONCreateDocument(obj,.error) {
 		Set %response.Status = ..#HTTP400BADREQUEST
 		Write error.%ToJSON()
 		Quit $$$OK
@@ -62,6 +63,31 @@ ClassMethod getPatientResource(patientId As %Integer, resource As %String) As %S
     Quit $$$OK
 }
 
+ClassMethod exportDocument() As %Status
+{
+    Set %response.ContentType = "application/json"
+
+    If '..GetJSONFromRequest(.obj) {
+		Set %response.Status = ..#HTTP400BADREQUEST
+		Set error = {"errormessage": "JSON not found"}
+		Write error.%ToJSON()
+		Quit $$$OK
+	}
+	
+	If '..ValidateJSONExportDocument(obj,.error) {
+		Set %response.Status = ..#HTTP400BADREQUEST
+		Write error.%ToJSON()
+		Quit $$$OK
+	}
+    Set tSC = $SYSTEM.Status.OK()
+
+    Set resp = ##class(fhir.dc.FhirClient).ExportDocument(obj.patientId, obj.docId, obj.token)
+
+    Write resp
+
+    Quit $$$OK
+}
+
 // Helper methods
 ClassMethod GetJSONFromRequest(Output obj As %DynamicObject) As %Boolean
 {
@@ -74,7 +100,29 @@ ClassMethod GetJSONFromRequest(Output obj As %DynamicObject) As %Boolean
 	Quit ok
 }
 
-ClassMethod ValidateJSON(obj As %DynamicObject, Output error As %DynamicObject) As %Boolean
+ClassMethod ValidateJSONExportDocument(obj As %DynamicObject, Output error As %DynamicObject) As %Boolean
+{
+	Set error = {}
+	
+	If obj.%Get("patientId") = "" {
+		Set error.errormessage = "patientId is missing"
+		Quit 0
+	}	
+	
+	If obj.%Get("docId") = "" {
+		Set error.errormessage = "docId is missing"
+		Quit 0
+	}
+
+    If obj.%Get("token") = "" {
+		Set error.errormessage = "oAuth token is missing"
+		Quit 0
+	}
+	
+	Quit 1
+}
+
+ClassMethod ValidateJSONCreateDocument(obj As %DynamicObject, Output error As %DynamicObject) As %Boolean
 {
 	Set error = {}
 	
