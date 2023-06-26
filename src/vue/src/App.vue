@@ -1,30 +1,51 @@
 <template>
-  <div class="container mx-auto p-4">
-    <div class="flex justify-center gap-64 items-center mb-4">
-      <HeaderContent />
-      <FhirServerDropdown />
-    </div>
-    <br/>
-    <PatientDropdown />
-    <PatientProfile />
-    <VoiceRecorder />
+  <div class="">
+    <SidebarContent :activePage="activePage" @pageChange="changePage">
+      <div v-if="activePage === 'Home'">
+        <HomePage />
+      </div>
+      <div v-if="activePage === 'Interactions'">
+        <InteractionsPage />
+      </div>
+      <div v-if="activePage === 'Patients'">
+        <PatientsPage />
+      </div>
+      <div v-if="activePage === 'Observations'">
+        <ObservationPage />
+      </div>
+      <div v-if="activePage === 'Settings'">
+        <SettingsPage />
+      </div>
+    </SidebarContent>
   </div>
 </template>
 
 <script>
-import HeaderContent from "./components/HeaderContent.vue";
-import PatientDropdown from "./components/PatientDropdown.vue";
-import FhirServerDropdown from "./components/FhirServerDropdown.vue";
-import PatientProfile from "./components/PatientProfile.vue";
-import VoiceRecorder from "./components/VoiceRecorder.vue";
+import HomePage from "./components/HomePage.vue";
+import PatientsPage from "./components/PatientsPage.vue";
+import InteractionsPage from "./components/InteractionsPage.vue";
+import ObservationPage from "./components/ObservationPage.vue";
+import SettingsPage from "./components/SettingsPage.vue";
+import SidebarContent from "./components/SidebarContent.vue";
 
 export default {
   components: {
-    HeaderContent,
-    PatientDropdown,
-    FhirServerDropdown,
-    PatientProfile,
-    VoiceRecorder,
+    HomePage,
+    PatientsPage,
+    SettingsPage,
+    InteractionsPage,
+    ObservationPage,
+    SidebarContent,
+  },
+  data() {
+    return {
+      activePage: "Home", // Set the initial active page
+    };
+  },
+  methods: {
+    changePage(page) {
+      this.activePage = page;
+    },
   },
 };
 </script>
