@@ -1,32 +1,45 @@
 <template>
   <div>
-    <div class="recorder_wrapper">
-      <div class="recorder">
-        <button
-          class="record_btn"
-          id="button"
-          @click="handleButtonClick"
-        ></button>
-        <span v-if="isRecording" class="ml-2 text-red-500">Recording...</span>
+    <div class="flex m-6">
+      <button
+        class="flex items-center justify-center bg-blue-500 text-white text-l font-semibold py-2 px-4 rounded-md"
+        @click="handleButtonClick"
+      >
+        <font-awesome-icon class="text-white mr-2" icon="microphone" />
+        Take Notes
+      </button>
+      <div v-if="isRecording" class="flex items-center justify-center ml-4">
+        <div class="rounded-full h-4 w-4 bg-red-500 mr-2"></div>
+        <p class="text-gray-600">Recording...</p>
       </div>
     </div>
 
-    <!-- <button
-      @click="startRecording"
-      :disabled="isRecording"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-    >
-      Start Recording
-    </button>
-    <button
-      @click="stopRecording"
-      :disabled="!isRecording"
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-    >
-      Stop Recording
-    </button> -->
-    <div v-if="transcription" class="mt-4 bg-gray-100 p-4 rounded">
-      <p>{{ transcription }}</p>
+    <div v-if="transcription" class="flex m-6">
+      <!-- Transcript column -->
+      <div class="w-1/2 pr-4">
+        <h2 class="text-xl font-semibold mb-4">Transcript</h2>
+        <div class="bg-gray-100 p-4 rounded-lg h-48 overflow-auto">
+          <p>{{ transcription }}</p>
+        </div>
+      </div>
+
+      <!-- Summary column -->
+      <div class="w-1/2 pl-4">
+        <h2 class="text-xl font-semibold mb-4">Summary</h2>
+        <textarea
+          class="w-full h-48 p-4 bg-gray-100 rounded-lg mb-4"
+          v-model="summary"
+        ></textarea>
+        <div class="flex justify-center items-center">
+          <button
+          class="px-4 py-2 bg-blue-500 text-white rounded-lg"
+          @click="saveDocument"
+        >
+          Save as Document
+        </button>
+        </div>
+       
+      </div>
     </div>
   </div>
 </template>
@@ -39,6 +52,7 @@ export default {
       mediaRecorder: null,
       chunks: [],
       transcription: "",
+      summary: "Here is the summary content",
     };
   },
   methods: {
@@ -114,130 +128,3 @@ export default {
   },
 };
 </script>
-
-<style>
-@import "https://fonts.googleapis.com/icon?family=Material+Icons|Roboto";
-
-.recorder_wrapper {
-  width: 100%;
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flex;
-  display: -o-flex;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
-
-.recorder {
-  display: inline-block;
-  text-align: center;
-  width: 500px;
-  max-width: 100%;
-}
-
-.record_btn {
-  width: 50px;
-  height: 50px;
-  font-family: "Material Icons";
-  font-size: 24px;
-  color: #e74c3c;
-  background: none;
-  border: 2px solid #e74c3c;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: 0.15s linear;
-}
-
-.record_btn:hover {
-  transition: 0.15s linear;
-  transform: scale(1.05);
-}
-
-.record_btn:active {
-  background: #f5f5f5;
-}
-
-.record_btn:after {
-  content: "\E029";
-}
-
-.record_btn[disabled] {
-  border: 2px solid #ccc;
-}
-
-.record_btn[disabled]:after {
-  content: "\E02B";
-  color: #ccc;
-}
-
-.record_btn[disabled]:hover {
-  transition: 0.15s linear;
-  transform: none;
-}
-
-.record_btn[disabled]:active {
-  background: none;
-}
-
-.recording {
-  animation: recording 2s infinite ease-in-out;
-  position: relative;
-}
-
-.recording:before {
-  content: "";
-  display: inline-block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0px;
-  height: 0px;
-  margin: 0px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.05);
-  animation: recording_before 2s infinite ease-in-out;
-}
-
-@keyframes recording {
-  from {
-    transform: scale(1.1);
-  }
-
-  50% {
-    transform: none;
-  }
-
-  to {
-    transform: scale(1.1);
-  }
-}
-
-@keyframes recording_before {
-  80% {
-    width: 200px;
-    height: 200px;
-    margin: -100px;
-    opacity: 0;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
-
-.record_canvas {
-  width: 60px;
-  height: 100px;
-  display: inline-block;
-}
-
-.txt_btn {
-  color: #000;
-  text-decoration: none;
-  transition: 0.15s linear;
-  animation: text_btn 0.3s ease-in-out;
-}
-</style>

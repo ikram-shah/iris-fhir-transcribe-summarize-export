@@ -16,7 +16,9 @@
     "core-js": "^3.8.3",
     "http-proxy-middleware": "^2.0.6",
     "vue": "^3.2.13",
-    "vue-audio-recorder": "^3.0.1"
+    "vue-audio-recorder": "^3.0.1",
+    "vue-router": "^4.2.2",
+    "vue3-easy-data-table": "^1.5.45"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
