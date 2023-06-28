@@ -1,6 +1,7 @@
 # IRIS FHIR Transcribe-Summarize-Export
 
 ## Build and run
+Replace <openai_api_key> in [docker-compose.yml](docker-compose.yml) with a valid OpenAI key. This is used in the summarizing the voice notes feature.
 ```
 ./scripts/rebuild.sh
 ```

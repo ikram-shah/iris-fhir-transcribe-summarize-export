@@ -4,7 +4,7 @@ services:
     build:
       context: .
       args:
-        openai_api_key: <open-api-key>
+        openai_api_key: <openai_api_key>
       dockerfile: Dockerfile
     restart: always
     #   command: --check-caps false
