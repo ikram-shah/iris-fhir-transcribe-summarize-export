@@ -8,6 +8,7 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <Route Url="/documentreference" Method="POST" Call="createDocument" Cors="true"/>
 <Route Url="/patient/:patientId/:resource" Method="GET" Call="getPatientResource" Cors="true"/>
 <Route Url="/exportDocument" Method="POST" Call="exportDocument" Cors="true"/>
+<Route Url="/summarize" Method="POST" Call="summarize" Cors="true"/>
 </Routes>
 }
 
@@ -57,6 +58,31 @@ ClassMethod getPatientResource(patientId As %Integer, resource As %String) As %S
     Set tSC = $SYSTEM.Status.OK()
 
     Set resp = ##class(fhir.dc.FhirClient).GetPatientResources(resource, patientId)
+
+    Write resp
+
+    Quit $$$OK
+}
+
+ClassMethod summarize() As %Status
+{
+   Set %response.ContentType = "application/json"
+
+    If '..GetJSONFromRequest(.obj) {
+		Set %response.Status = ..#HTTP400BADREQUEST
+		Set error = {"errormessage": "JSON not found"}
+		Write error.%ToJSON()
+		Quit $$$OK
+	}
+	
+	If '..ValidateJSONSummarize(obj,.error) {
+		Set %response.Status = ..#HTTP400BADREQUEST
+		Write error.%ToJSON()
+		Quit $$$OK
+	}
+    Set tSC = $SYSTEM.Status.OK()
+
+    Set resp = ##class(fhir.dc.FhirClient).Summarize(obj.text)
 
     Write resp
 
@@ -116,6 +142,18 @@ ClassMethod ValidateJSONExportDocument(obj As %DynamicObject, Output error As %D
 
     If obj.%Get("token") = "" {
 		Set error.errormessage = "oAuth token is missing"
+		Quit 0
+	}
+	
+	Quit 1
+}
+
+ClassMethod ValidateJSONSummarize(obj As %DynamicObject, Output error As %DynamicObject) As %Boolean
+{
+	Set error = {}
+	
+	If obj.%Get("text") = "" {
+		Set error.errormessage = "text is missing"
 		Quit 0
 	}
 	

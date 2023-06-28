@@ -4,6 +4,27 @@ from irisfhirclient import *
 from template import *
 import base64
 
+import os
+import openai
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+
+def Summarize(text):
+    print(openai.api_key)
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt="summarize this =" + text,
+        temperature=1,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=1
+    )
+    resp = {
+        "summary": response["choices"][0]["text"]
+    }
+    return json.dumps(resp)
+
 
 def CreateGoogleDoc(patientId, docId, token):
     url = 'https://docs.googleapis.com/v1/documents'

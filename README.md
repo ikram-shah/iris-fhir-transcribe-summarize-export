@@ -20,6 +20,8 @@ curl --location 'http://localhost:52773/fhir/api/patient/all' \
 --header 'Authorization: Basic U3VwZXJVc2VyOlNZUw=='
 ```
 
+Find the full list of APIs in [postman collection](other/IRIS-FHIR-Talk2Doc.postman_collection.json).
+
 ### Build and Run Vue app
 
 ```

@@ -3,6 +3,8 @@ services:
   iris:
     build:
       context: .
+      args:
+        openai_api_key: <open-api-key>
       dockerfile: Dockerfile
     restart: always
     #   command: --check-caps false
