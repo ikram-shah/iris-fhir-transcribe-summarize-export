@@ -15,23 +15,6 @@
           </div>
           <hr class="my-4 border-t border-gray-300" />
           <ul class="space-y-2">
-            <!-- <li>
-              <a
-                @click="changePage('Home')"
-                href="#"
-                :class="{
-                  'block p-2 rounded bg-blue-600 text-white':
-                    activePage === 'Home',
-                  'block p-2 rounded': activePage !== 'Home',
-                }"
-              >
-                <font-awesome-icon
-                  icon="fa-home"
-                  class="mr-2"
-                ></font-awesome-icon>
-                Dashboard
-              </a>
-            </li> -->
             <li>
               <a
                 @click="changePage('Interactions')"
@@ -49,23 +32,6 @@
                 Interactions
               </a>
             </li>
-            <!-- <li>
-              <a
-                @click="changePage('Patients')"
-                href="#"
-                :class="{
-                  'block p-2 rounded bg-blue-600 text-white':
-                    activePage === 'Patients',
-                  'block p-2 rounded': activePage !== 'Patients',
-                }"
-              >
-                <font-awesome-icon
-                  icon="fa-user"
-                  class="mr-2"
-                ></font-awesome-icon>
-                Patients
-              </a>
-            </li> -->
             <li>
               <a
                 @click="changePage('Observations')"
@@ -97,27 +63,47 @@
                   icon="fa-calendar"
                   class="mr-2"
                 ></font-awesome-icon>
-                Past Visits
+                Visits
               </a>
             </li>
           </ul>
           <hr class="my-4 border-t border-gray-300" />
+          <p class="font-bold mb-4"> Documents</p>
           <ul class="space-y-2">
             <li>
               <a
-                @click="changePage('Settings')"
+                @click="changePage('DocumentsSearch')"
                 href="#"
                 :class="{
                   'block p-2 rounded bg-blue-600 text-white':
-                    activePage === 'Settings',
-                  'block p-2 rounded': activePage !== 'Settings',
+                    activePage === 'DocumentsSearch',
+                  'block p-2 rounded': activePage !== 'DocumentsSearch',
                 }"
               >
                 <font-awesome-icon
-                  icon="fa-cog"
+                  icon="fa-search"
                   class="mr-2"
                 ></font-awesome-icon>
-                Settings
+                Search
+              </a>
+            </li>
+          </ul>
+          <ul class="space-y-2">
+            <li class="mt-2">
+              <a
+                @click="changePage('DocumentsPage')"
+                href="#"
+                :class="{
+                  'block p-2 rounded bg-blue-600 text-white':
+                    activePage === 'DocumentsPage',
+                  'block p-2 rounded': activePage !== 'DocumentsPage',
+                }"
+              >
+                <font-awesome-icon
+                  icon="fa-history"
+                  class="mr-2"
+                ></font-awesome-icon>
+                History
               </a>
             </li>
           </ul>

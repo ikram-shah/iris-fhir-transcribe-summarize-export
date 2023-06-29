@@ -32,20 +32,6 @@
         </li>
       </ul>
     </div>
-    <div class="flex items-center">
-      <button class="flex items-center mr-8">
-        <font-awesome-icon icon="fa-cog" class="mr-2"></font-awesome-icon>
-        <p>Settings</p>
-      </button>
-      <button class="flex items-center mr-8">
-        <font-awesome-icon icon="fa-home" class="mr-2"></font-awesome-icon>
-        <p>Home</p>
-      </button>
-    </div>
-  </div>
-  <!-- Main Content -->
-  <div class="flex-1 overflow-auto bg-white">
-    <slot :activeTopPage="activeTopPage"></slot>
   </div>
 </template>
 

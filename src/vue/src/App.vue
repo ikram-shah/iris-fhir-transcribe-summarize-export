@@ -5,10 +5,6 @@
       @topPageChange="changeTopPage"
       @patient="patientSelected"
     >
-    <div v-if="selectedPatientData === null">
-      <HomePage/>
-    </div>
-    
     </TopBar>
     <div v-if="selectedPatientData !== null">
       <SidebarContent
@@ -28,8 +24,11 @@
         <div v-if="activePage === 'Encounters'">
           <EncountersPage />
         </div>
-        <div v-if="activePage === 'Settings'">
-          <SettingsPage />
+        <div v-if="activePage === 'DocumentsSearch'">
+          <DocumentsSearch />
+        </div>
+        <div v-if="activePage === 'DocumentsPage'">
+          <DocumentsPage />
         </div>
       </SidebarContent>
     </div>
@@ -37,25 +36,25 @@
 </template>
 
 <script>
-import HomePage from "./components/HomePage.vue"
 import TopBar from "./components/TopBar.vue";
 import PatientsPage from "./components/PatientsPage.vue";
 import InteractionsPage from "./components/InteractionsPage.vue";
 import ObservationPage from "./components/ObservationPage.vue";
 import EncountersPage from "./components/EncountersPage.vue";
-import SettingsPage from "./components/SettingsPage.vue";
 import SidebarContent from "./components/SidebarContent.vue";
+import DocumentsSearch from "./components/DocumentsSearch.vue";
+import DocumentsPage from "./components/DocumentsPage.vue";
 
 export default {
   components: {
-    HomePage,
     TopBar,
     PatientsPage,
-    SettingsPage,
     InteractionsPage,
     ObservationPage,
     EncountersPage,
     SidebarContent,
+    DocumentsPage,
+    DocumentsSearch,
   },
   data() {
     return {
