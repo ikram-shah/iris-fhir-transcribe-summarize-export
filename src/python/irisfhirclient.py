@@ -2,6 +2,7 @@ import json
 from fhirpy import SyncFHIRClient
 from tabulate import tabulate
 from fhirpy.base.searchset import Raw
+import uuid
 
 contentType = "application/fhir+json"
 
@@ -105,6 +106,7 @@ def CreateDocumentForPatient(patientId, practitionerId, base64payload, mimeType,
     docref = client.resource("DocumentReference")
 
     docref["status"] = "current"
+    docref["id"] = str(uuid.uuid4())
     docref["content"] = [{
         "attachment": {
             "contentType": mimeType,
@@ -116,8 +118,8 @@ def CreateDocumentForPatient(patientId, practitionerId, base64payload, mimeType,
     docref['subject'] = patient.to_reference()
 
     try:
-        docref.save()
+        resp = docref.save()
     except Exception as e:
         return "Error while creating DocumentReference:" + str(e)
 
-    return "Document Reference Created Successfully"
+    return json.dumps({"id": docref["id"]})
