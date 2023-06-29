@@ -13,16 +13,14 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 def Summarize(text):
     response = openai.Completion.create(
         model="text-davinci-003",
-        prompt="summarize this =" + text,
+        prompt="summarize this and give title in json format - " + text,
         temperature=1,
+        max_tokens=300,
         top_p=1,
         frequency_penalty=0,
         presence_penalty=1
     )
-    resp = {
-        "summary": response["choices"][0]["text"]
-    }
-    return json.dumps(resp)
+    return response["choices"][0]["text"].replace('\n', '')
 
 
 def CreateGoogleDoc(patientId, docId, token):
