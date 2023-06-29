@@ -1,4 +1,5 @@
 const { defineConfig } = require("@vue/cli-service");
+const dotenv = require('dotenv-webpack');
 module.exports = defineConfig({
   transpileDependencies: true,
   css: {
@@ -12,6 +13,9 @@ module.exports = defineConfig({
       filename: "[name].js",
       chunkFilename: "[name].js",
     },
+    plugins: [
+      new dotenv()
+    ]
   },
   devServer: {
     proxy: {

@@ -1,29 +1,39 @@
 <template>
-  <div class="container w-1/2 p-16">
+  <div class="container mx-auto p-16">
     <!-- Previous Documents -->
-    <div>
-      <h2 class="text-xl font-semibold mb-4">Previous Documents</h2>
-      <ul class="space-y-4">
-        <li
-          v-for="document in documents"
-          :key="document.id"
-          class="bg-white shadow-md rounded p-4 flex items-center justify-between"
-        >
-          <div class="flex-grow">
-            <h3 class="text-lg font-medium">{{ document.title }}</h3>
-            <div class="flex items-center space-x-4 text-gray-500 text-sm mt-2">
-              <p>{{ formatDate(document.uploadedDate) }}</p>
-              <p>Uploaded by {{ document.uploadedBy }}</p>
-            </div>
+    <button
+      ref="googleLoginBtn"
+      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+    >
+      Export to Google Sheets
+    </button>
+    <div class="grid grid-cols-2 gap-8">
+      <div
+        v-for="document in documents"
+        :key="document.id"
+        class="bg-white shadow-md rounded p-4 flex items-center justify-between"
+      >
+        <div class="flex-grow">
+          <h3 class="text-lg font-medium">{{ document.title }}</h3>
+          <div class="flex items-center space-x-4 text-gray-500 text-sm mt-2">
+            <p>{{ document.id }}</p>
+            <p>{{ document.updatedDate }}</p>
+            <p>{{ document.practitionerId }}</p>
           </div>
-          <button class="px-4 py-2 rounded" @click="openDocument(document.id)">
-            <font-awesome-icon
-              icon="fa-external-link-alt"
-              class="mr-2"
-            ></font-awesome-icon>
-          </button>
-        </li>
-      </ul>
+        </div>
+        <button class="px-4 py-2 rounded">
+          <font-awesome-icon
+            icon="fa-file-text"
+            class="mr-2 text-blue-500"
+          ></font-awesome-icon>
+        </button>
+        <button class="px-4 py-2 rounded">
+          <font-awesome-icon
+            icon="fa-external-link-alt"
+            class="mr-2"
+          ></font-awesome-icon>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -32,25 +42,71 @@
 export default {
   data() {
     return {
-      documents: [
-        {
-          id: 1,
-          title: "Sample Document 1",
-          uploadedDate: "2023-06-01",
-          uploadedBy: "John Doe",
-        },
-        {
-          id: 2,
-          title: "Sample Document 2",
-          uploadedDate: "2023-06-15",
-          uploadedBy: "Jane Smith",
-        },
-      ],
+      gClientId:process.env.G_CLIENT_ID,
+      documents: [],
       searchQuery: "",
       searchResults: [],
     };
   },
+  mounted() {
+    this.loginInit(this.gClientId);
+    this.getDocuments(1);
+  },
   methods: {
+    loginInit(gClientId) {
+      this.gClient = window.google.accounts.oauth2.initTokenClient({
+        client_id: gClientId,
+        scope: "https://www.googleapis.com/auth/documents",
+        callback: this.handleOauthToken,
+      });
+      window.google.accounts.id.initialize({
+        client_id: gClientId,
+        callback: this.handleCredentialResponse,
+      });
+      window.google.accounts.id.renderButton(this.$refs.googleLoginBtn, {
+        text: "Login",
+        size: "large",
+        theme: "filled_blue", // option : filled_black | outline | filled_blue
+      });
+    },
+    async handleCredentialResponse(response) {
+      try {
+        this.gClient.requestAccessToken();
+        console.log(response);
+      } catch (error) {
+        //on fail do something
+        if (error) console.error(error);
+        else console.error(error);
+        return null;
+      }
+    },
+    async handleOauthToken(response) {
+      try {
+        this.oAuth = response["access_token"];
+        localStorage.setItem("oAuth", this.oAuth);
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Basic U3VwZXJVc2VyOlNZUw==");
+
+        var requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: JSON.stringify({
+            patientId: 1,
+            docId: 1921,
+            token: this.oAuth,
+          }),
+        };
+        fetch("/fhir/api/exportDocument", requestOptions).then((response) =>
+          response.json()
+        );
+        window.alert("created doc");
+      } catch (error) {
+        //on fail do something
+        if (error) console.error(error);
+        else console.error(error);
+        return null;
+      }
+    },
     performSearch() {
       // Simulating semantic search by filtering documents based on the search query
       const query = this.searchQuery.toLowerCase().trim();
@@ -69,6 +125,29 @@ export default {
           }
         });
       }
+    },
+    getFirstFourLines(content) {
+      const lines = content.split("\n");
+      return lines.slice(0, 4).join("\n");
+    },
+    getDocuments(id) {
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", "Basic U3VwZXJVc2VyOlNZUw==");
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      fetch(`/fhir/api/patient/${id}/DocumentReference`, requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          this.documents = result;
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
     },
     formatDate(dateString) {
       const options = { year: "numeric", month: "long", day: "numeric" };

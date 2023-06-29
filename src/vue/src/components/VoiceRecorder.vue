@@ -15,30 +15,26 @@
     </div>
 
     <div v-if="transcription" class="flex m-6">
-      <!-- Transcript column -->
       <div class="w-1/2 pr-4">
-        <h2 class="text-xl font-semibold mb-4">Transcript</h2>
-        <div class="bg-gray-100 p-4 rounded-lg h-48 overflow-auto">
-          <p>{{ transcription }}</p>
-        </div>
-      </div>
-
-      <!-- Summary column -->
-      <div class="w-1/2 pl-4">
         <h2 class="text-xl font-semibold mb-4">Summary</h2>
         <textarea
           class="w-full h-48 p-4 bg-gray-100 rounded-lg mb-4"
           v-model="summary"
         ></textarea>
-        <div class="flex justify-center items-center">
+        <div class="flex">
           <button
-          class="px-4 py-2 bg-blue-500 text-white rounded-lg"
-          @click="saveDocument"
-        >
-          Save as Document
-        </button>
+            class="px-4 py-2 bg-blue-500 text-white rounded-lg"
+            @click="saveDocument(this.summary)"
+          >
+            Save as Document
+          </button>
         </div>
-       
+      </div>
+      <div class="w-1/2 pl-4">
+        <h2 class="text-xl font-semibold mb-4">Transcript</h2>
+        <div class="bg-gray-100 p-4 rounded-lg h-48 overflow-auto">
+          <p>{{ transcription }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -52,7 +48,7 @@ export default {
       mediaRecorder: null,
       chunks: [],
       transcription: "",
-      summary: "Here is the summary content",
+      summary: "",
     };
   },
   methods: {
@@ -82,7 +78,7 @@ export default {
       }
     },
     async sendAudioToWhisper(blob) {
-      const apiKey = "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";
+      const apiKey = process.env.OPENAI_API_KEY;
       const formData = new FormData();
       formData.append("file", blob);
       formData.append("model", "whisper-1");
@@ -111,6 +107,35 @@ export default {
       } catch (error) {
         console.error("Error sending audio to Whisper API:", error);
       }
+
+      return this.transcription;
+    },
+    getSummary(transcription) {
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", "Basic U3VwZXJVc2VyOlNZUw==");
+
+      var raw = JSON.stringify({ text: transcription });
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      fetch(`/fhir/api/summarize`, requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result);
+          this.summary = result.summary;
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+    },
+    formatDate(dateTime) {
+      const date = new Date(dateTime);
+      return date.toLocaleDateString();
     },
     stopRecording() {
       if (this.mediaRecorder) {
@@ -122,8 +147,42 @@ export default {
           await this.sendAudioToWhisper(
             new File([blob], `file${Date.now()}.m4a`)
           );
+
+          this.getSummary(this.transcription);
         };
       }
+    },
+    saveDocument(summary) {
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", "Basic U3VwZXJVc2VyOlNZUw==");
+
+      var raw = JSON.stringify({
+        //todo: patient ID and practitioner ID
+        patientId: 1,
+        practitionerId: 3,
+        base64payload: summary,
+        mimeType: "application/pdf",
+      });
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      fetch(`/fhir/api/documentreference`, requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.id) {
+            alert("Document added successfully!")
+          } else {
+            alert("Document addition failed")
+          }
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
     },
   },
 };
