@@ -70,16 +70,14 @@ def FormatResource(resource, data, opt):
     return rows
 
 
-def GetResource(resource, searchFor, searchVal, url, api_key):
+def GetResource(resource, id, url, api_key):
     # Get Connection
     client = SyncFHIRClient(url=url, extra_headers={
                             "Content-Type": contentType, "x-api-key": api_key})
     data = ""
     try:
-        if len(searchVal) > 0 and resource == 'Patient':
-            data = client.resources(resource).search(
-                Raw(**{searchFor: searchVal})).fetch()
-
+        if len(id) > 0:
+            data = client.resources(resource).search(_id=id).fetch()
         else:
             data = client.resources(resource).fetch()
 

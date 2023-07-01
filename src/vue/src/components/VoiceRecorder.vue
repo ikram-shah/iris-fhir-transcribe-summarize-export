@@ -106,7 +106,7 @@ export default {
       var myHeaders = new Headers();
       myHeaders.append("Authorization", "Basic U3VwZXJVc2VyOlNZUw==");
 
-      var raw = JSON.stringify({ text: transcription + "bla bla bla" });
+      var raw = JSON.stringify({ text: transcription });
 
       var requestOptions = {
         method: "POST",

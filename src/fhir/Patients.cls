@@ -7,6 +7,8 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <Route Url="/patient/all" Method="GET" Call="getAllPatients" Cors="true"/>
 <Route Url="/documentreference" Method="POST" Call="createDocument" Cors="true"/>
 <Route Url="/patient/:patientId/:resource" Method="GET" Call="getPatientResource" Cors="true"/>
+<Route Url="/patient/:patientId" Method="GET" Call="getPatient" Cors="true"/>
+<Route Url="/documentReference/:documentReferenceId" Method="GET" Call="getDocumentReference" Cors="true"/>
 <Route Url="/exportDocument" Method="POST" Call="exportDocument" Cors="true"/>
 <Route Url="/summarize" Method="POST" Call="summarize" Cors="true"/>
 </Routes>
@@ -19,6 +21,32 @@ ClassMethod getAllPatients() As %Status
     Set tSC = $SYSTEM.Status.OK()
 
     Set resp = ##class(fhir.dc.FhirClient).GetResource("Patient")
+
+    Write resp
+
+    Quit $$$OK
+}
+
+ClassMethod getPatient(patientId As %String) As %Status
+{
+    Set %response.ContentType = "application/json"
+
+    Set tSC = $SYSTEM.Status.OK()
+
+    Set resp = ##class(fhir.dc.FhirClient).GetResource("Patient", patientId)
+
+    Write resp
+
+    Quit $$$OK
+}
+
+ClassMethod getDocumentReference(documentReferenceId As %String) As %Status
+{
+    Set %response.ContentType = "application/json"
+
+    Set tSC = $SYSTEM.Status.OK()
+
+    Set resp = ##class(fhir.dc.FhirClient).GetResource("DocumentReference", documentReferenceId)
 
     Write resp
 
@@ -107,7 +135,7 @@ ClassMethod exportDocument() As %Status
 	}
     Set tSC = $SYSTEM.Status.OK()
 
-    Set resp = ##class(fhir.dc.FhirClient).ExportDocument(obj.patientId, obj.title, obj.docId, obj.token)
+    Set resp = ##class(fhir.dc.FhirClient).ExportDocument(obj.title, obj.body, obj.token)
 
     Write resp
 
@@ -129,19 +157,14 @@ ClassMethod GetJSONFromRequest(Output obj As %DynamicObject) As %Boolean
 ClassMethod ValidateJSONExportDocument(obj As %DynamicObject, Output error As %DynamicObject) As %Boolean
 {
 	Set error = {}
-	
-	If obj.%Get("patientId") = "" {
-		Set error.errormessage = "patientId is missing"
-		Quit 0
-	}	
 
 	If obj.%Get("title") = "" {
 		Set error.errormessage = "title is missing"
 		Quit 0
 	}
 	
-	If obj.%Get("docId") = "" {
-		Set error.errormessage = "docId is missing"
+	If obj.%Get("body") = "" {
+		Set error.errormessage = "body is missing"
 		Quit 0
 	}
 

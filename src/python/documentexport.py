@@ -23,19 +23,10 @@ def Summarize(text):
     return response["choices"][0]["text"].replace('\n', '')
 
 
-def CreateGoogleDoc(patientId, title, docId, token):
+def CreateGoogleDoc(title, body, token):
     url = 'https://docs.googleapis.com/v1/documents'
 
-    documents = json.loads(GetPatientResources(
-        "DocumentReference", patientId, "http://localhost:52773/fhir/r4/", ""))
-
-    docMatch = None
-
-    for doc in documents:
-        if doc['id'] == str(docId):
-            docMatch = doc
-
-    base64_bytes = docMatch['base64payload'].encode('utf-8')
+    base64_bytes = body.encode('utf-8')
     message_bytes = base64.b64decode(base64_bytes)
 
     # Set the desired document content

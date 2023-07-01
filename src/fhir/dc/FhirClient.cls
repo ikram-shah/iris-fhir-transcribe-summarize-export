@@ -23,7 +23,7 @@ ClassMethod Init() As %Integer
 
 
 //  Get Resource
-ClassMethod GetResource(resource As %String, searchParm = "", searchVal = "") As %Status
+ClassMethod GetResource(resource As %String, id = "") As %Status
 {
 	Set obj = ##class(fhir.dc.FhirServer).%OpenId(1)
 
@@ -31,7 +31,7 @@ ClassMethod GetResource(resource As %String, searchParm = "", searchVal = "") As
 	{  
 	  //Call Embedded Python Function to get requested resource
 	  Set irisfhirclient = ##class(%SYS.Python).Import("irisfhirclient")
-	  Set data = irisfhirclient.GetResource(resource, searchParm, searchVal, obj.Endpoint, obj.ApiKey) 
+	  Set data = irisfhirclient.GetResource(resource, id, obj.Endpoint, obj.ApiKey) 
 	}
   	Else
   	{ 
@@ -81,12 +81,12 @@ ClassMethod CreateDocumentForPatient(patientId As %Integer, practitionerId As %I
 }
 
 
-ClassMethod ExportDocument(patientId As %Integer, title As %String, docId As %String, token As %String) As %Status
+ClassMethod ExportDocument(title As %String, body As %String, token As %String) As %Status
 {
 	
 	//Call Embedded Python Function to export document
 	Set documentexport = ##class(%SYS.Python).Import("documentexport")
-	Set data = documentexport.CreateGoogleDoc(patientId, title, docId, token) 
+	Set data = documentexport.CreateGoogleDoc(title, body, token) 
 
 	Return data
 }
