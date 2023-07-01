@@ -107,7 +107,7 @@ ClassMethod exportDocument() As %Status
 	}
     Set tSC = $SYSTEM.Status.OK()
 
-    Set resp = ##class(fhir.dc.FhirClient).ExportDocument(obj.patientId, obj.docId, obj.token)
+    Set resp = ##class(fhir.dc.FhirClient).ExportDocument(obj.patientId, obj.title, obj.docId, obj.token)
 
     Write resp
 
@@ -134,6 +134,11 @@ ClassMethod ValidateJSONExportDocument(obj As %DynamicObject, Output error As %D
 		Set error.errormessage = "patientId is missing"
 		Quit 0
 	}	
+
+	If obj.%Get("title") = "" {
+		Set error.errormessage = "title is missing"
+		Quit 0
+	}
 	
 	If obj.%Get("docId") = "" {
 		Set error.errormessage = "docId is missing"

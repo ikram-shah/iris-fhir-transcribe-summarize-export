@@ -68,7 +68,7 @@ ClassMethod CreateDocumentForPatient(patientId As %Integer, practitionerId As %I
 
 	If $ISOBJECT(obj)  
 	{  
-	  //Call Embedded Python Function to get patient resources
+	  //Call Embedded Python Function to create document reference for patient
 	  Set irisfhirclient = ##class(%SYS.Python).Import("irisfhirclient")
 	  Set data = irisfhirclient.CreateDocumentForPatient(patientId, practitionerId, base64payload, mimeType, obj.Endpoint, obj.ApiKey) 
 	}
@@ -81,19 +81,19 @@ ClassMethod CreateDocumentForPatient(patientId As %Integer, practitionerId As %I
 }
 
 
-ClassMethod ExportDocument(patientId As %Integer, docId As %Integer, token As %String) As %Status
+ClassMethod ExportDocument(patientId As %Integer, title As %String, docId As %String, token As %String) As %Status
 {
 	
 	//Call Embedded Python Function to export document
 	Set documentexport = ##class(%SYS.Python).Import("documentexport")
-	Set data = documentexport.CreateGoogleDoc(patientId, docId, token) 
+	Set data = documentexport.CreateGoogleDoc(patientId, title, docId, token) 
 
 	Return data
 }
 
 ClassMethod Summarize(text As %String) As %Status
 { 
-	//Call Embedded Python Function to export document
+	//Call Embedded Python Function to summarize text
 	Set documentexport = ##class(%SYS.Python).Import("documentexport")
 	Set data = documentexport.Summarize(text) 
 

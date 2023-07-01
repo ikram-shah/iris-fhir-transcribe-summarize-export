@@ -17,7 +17,16 @@ def FormatResource(resource, data, opt):
                     "lastName": rowval.get_by_path('name.0.family'),
                     "firstName": rowval.get_by_path('name.0.given.0'),
                     "birthDate": rowval.get_by_path('birthDate'),
-                    "gender": rowval.get_by_path('gender')
+                    "gender": rowval.get_by_path('gender'),
+                    "address": {
+                        "line": rowval.get_by_path('address.0.line'),
+                        "city": rowval.get_by_path('address.0.city'),
+                        "state": rowval.get_by_path('address.0.state'),
+                        "postalCode": rowval.get_by_path('address.0.postalCode'),
+                        "country": rowval.get_by_path('address.0.country')
+                    },
+                    "communicationLanguage": rowval.get_by_path('communication.0.language.text'),
+                    "phone": rowval.get_by_path('telecom.0.value')
                 }
                 rows.append(row)
         elif resource == "Observation":

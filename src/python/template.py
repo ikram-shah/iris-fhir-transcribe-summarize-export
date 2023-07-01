@@ -1,4 +1,4 @@
-def insert_text(summary):
+def get_insert_text_template(summary):
     document_content = {
         "requests": [
             {
@@ -14,8 +14,8 @@ def insert_text(summary):
     return document_content
 
 
-def create_doc(name, date, summary):
+def get_create_doc_template(name):
     document_content = {
-        'title': 'Report -' + name,
+        'title': name,
     }
     return document_content

@@ -1,10 +1,8 @@
 <template>
   <div>
     <div class="flex m-6">
-      <button
-        class="flex items-center justify-center bg-blue-500 text-white text-l font-semibold py-2 px-4 rounded-md"
-        @click="handleButtonClick"
-      >
+      <button class="flex items-center justify-center bg-blue-500 text-white text-l font-semibold py-2 px-4 rounded-md"
+        @click="handleButtonClick">
         <font-awesome-icon class="text-white mr-2" icon="microphone" />
         Take Notes
       </button>
@@ -17,15 +15,9 @@
     <div v-if="transcription" class="flex m-6">
       <div class="w-1/2 pr-4">
         <h2 class="text-xl font-semibold mb-4">Summary</h2>
-        <textarea
-          class="w-full h-48 p-4 bg-gray-100 rounded-lg mb-4"
-          v-model="summary"
-        ></textarea>
+        <textarea class="w-full h-48 p-4 bg-gray-100 rounded-lg mb-4" v-model="summary"></textarea>
         <div class="flex">
-          <button
-            class="px-4 py-2 bg-blue-500 text-white rounded-lg"
-            @click="saveDocument(this.summary)"
-          >
+          <button class="px-4 py-2 bg-blue-500 text-white rounded-lg" @click="saveDocument(this.summary)">
             Save as Document
           </button>
         </div>
@@ -114,7 +106,7 @@ export default {
       var myHeaders = new Headers();
       myHeaders.append("Authorization", "Basic U3VwZXJVc2VyOlNZUw==");
 
-      var raw = JSON.stringify({ text: transcription });
+      var raw = JSON.stringify({ text: transcription + "bla bla bla" });
 
       var requestOptions = {
         method: "POST",

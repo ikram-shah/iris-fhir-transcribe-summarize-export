@@ -1,18 +1,12 @@
 <template>
   <div class="container mx-auto p-16">
     <!-- Previous Documents -->
-    <button
-      ref="googleLoginBtn"
-      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
-    >
+    <button ref="googleLoginBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
       Export to Google Sheets
     </button>
     <div class="grid grid-cols-2 gap-8">
-      <div
-        v-for="document in documents"
-        :key="document.id"
-        class="bg-white shadow-md rounded p-4 flex items-center justify-between"
-      >
+      <div v-for="document in documents" :key="document.id"
+        class="bg-white shadow-md rounded p-4 flex items-center justify-between">
         <div class="flex-grow">
           <h3 class="text-lg font-medium">{{ document.title }}</h3>
           <div class="flex items-center space-x-4 text-gray-500 text-sm mt-2">
@@ -22,16 +16,10 @@
           </div>
         </div>
         <button class="px-4 py-2 rounded">
-          <font-awesome-icon
-            icon="fa-file-text"
-            class="mr-2 text-blue-500"
-          ></font-awesome-icon>
+          <font-awesome-icon icon="fa-file-text" class="mr-2 text-blue-500"></font-awesome-icon>
         </button>
         <button class="px-4 py-2 rounded">
-          <font-awesome-icon
-            icon="fa-external-link-alt"
-            class="mr-2"
-          ></font-awesome-icon>
+          <font-awesome-icon icon="fa-external-link-alt" class="mr-2"></font-awesome-icon>
         </button>
       </div>
     </div>
@@ -42,7 +30,7 @@
 export default {
   data() {
     return {
-      gClientId:process.env.G_CLIENT_ID,
+      gClientId: process.env.G_CLIENT_ID,
       documents: [],
       searchQuery: "",
       searchResults: [],
@@ -92,6 +80,7 @@ export default {
           headers: myHeaders,
           body: JSON.stringify({
             patientId: 1,
+            title: "Random title",
             docId: 1921,
             token: this.oAuth,
           }),

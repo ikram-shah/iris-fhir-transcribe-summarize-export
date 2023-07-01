@@ -1,6 +1,6 @@
 # IRIS FHIR Transcribe-Summarize-Export
 
-Built by [Ikram Shah](https://community.intersystems.com/user/ikram-shah) and [Sowmiya Nagarajan](https://community.intersystems.com/user/sowmiya-nagarajan).
+ *Built by [Ikram Shah](https://community.intersystems.com/user/ikram-shah) and [Sowmiya Nagarajan](https://community.intersystems.com/user/sowmiya-nagarajan).*
 
 ## Overview
 
@@ -14,15 +14,16 @@ The application also acts as a dashboard to view patient and other information l
 The frontend UI is built as a **Vue.js** app. The backend is powered by **IRIS REST** api and there is an underlying FHIR server running to store all data. The application uses **embedded-python** to connect to FHIR api via fhirpy module.
 
 ## Build and run
-1. Replace `<openai_api_key>` in [docker-compose.yml](docker-compose.yml) with a valid OpenAI key. This is used in the summarizing the voice notes feature.
-2. Follow steps in following section to configure OAuth Client ID for Google docs export. Set it in [.env](src/vue/.env)
+1. Refer [here](https://www.howtogeek.com/885918/how-to-get-an-openai-api-key/) to create an OpenAI API key. This is used in the transcription and summarizing the voice notes features. Replace `<openai_api_key>` in [docker-compose.yml](docker-compose.yml) for backend AND in [.env](src/vue/.env) for frontend.
+    a. 
+2. Follow steps in following section to configure OAuth Client ID for Google docs export. Set it in [.env](src/vue/.env).
 3. Run below script to stop, build and start docker containers.
     ```bash
     ./scripts/rebuild.sh
     ```
 
 ## Configure Google OAuth Client ID
-> ⚠️ *Not all users can test the OAuth flow (for Google Docs export) due to restrictions in the consent screen during testing phase with Google. You need to set up your own client ID and use it as mentioned below. This is a quick process and should only take a few minutes.  **But feel free to also raise an issue in this repo to add specific mail IDs to test quickly.*** ⚠️
+ ⚠️ *Not all users can test the OAuth flow (for Google Docs export) due to restrictions in the consent screen during testing phase with Google. You need to set up your own client ID and use it as mentioned below. This is a quick process and should only take a few minutes.  **But feel free to also raise an issue in this repo to add specific mail IDs to test quickly.*** ⚠️
 
 <br/>
 

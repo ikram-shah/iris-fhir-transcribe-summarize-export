@@ -23,13 +23,12 @@ def Summarize(text):
     return response["choices"][0]["text"].replace('\n', '')
 
 
-def CreateGoogleDoc(patientId, docId, token):
+def CreateGoogleDoc(patientId, title, docId, token):
     url = 'https://docs.googleapis.com/v1/documents'
 
     documents = json.loads(GetPatientResources(
         "DocumentReference", patientId, "http://localhost:52773/fhir/r4/", ""))
 
-    payload = 'not found'
     docMatch = None
 
     for doc in documents:
@@ -40,8 +39,7 @@ def CreateGoogleDoc(patientId, docId, token):
     message_bytes = base64.b64decode(base64_bytes)
 
     # Set the desired document content
-    document_content = create_doc(
-        "Ikram Shah V", docMatch["updatedDate"], message_bytes.decode('utf-8'))
+    document_content = get_create_doc_template(title)
 
     # Convert the document content to JSON
     document_json = json.dumps(document_content)
@@ -54,16 +52,19 @@ def CreateGoogleDoc(patientId, docId, token):
         data=document_json
     )
 
+    resp = dict()
+
     # Check if the request was successful
     if response.status_code == 200:
         document_id = response.json()['documentId']
-        print(f"Google Doc created successfully! Document ID: {document_id}")
+        resp["googleDocId"] = document_id
+        resp["status"] = "Created doc with title successfully."
     else:
-        print("Failed to create Google Doc.")
-        print(response.json())
+        resp["status"] = "Failed to create Google Doc."
+        return resp
 
     # Set the desired document content
-    document_content = insert_text(message_bytes.decode('utf-8'))
+    document_content = get_insert_text_template(message_bytes.decode('utf-8'))
 
     # Convert the document content to JSON
     document_json = json.dumps(document_content)
@@ -78,7 +79,8 @@ def CreateGoogleDoc(patientId, docId, token):
 
     # Check if the request was successful
     if response.status_code == 200:
-        print(f"Google Doc updated successfully! Document ID: {document_id}")
+        resp["status"] = "Updated doc with text successfully."
     else:
-        print("Failed to update Google Doc.")
-        print(response.json())
+        resp["status"] = "Failed to update Google Doc."
+
+    return json.dumps(resp)
