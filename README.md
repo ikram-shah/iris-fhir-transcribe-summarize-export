@@ -15,7 +15,7 @@ The frontend UI is built as a **Vue.js** app. The backend is powered by **IRIS R
 
 ## Build and run
 1. Replace `<openai_api_key>` in [docker-compose.yml](docker-compose.yml) with a valid OpenAI key. This is used in the summarizing the voice notes feature.
-2. Follow steps in to configure OAuth Client ID for Google docs export. Set it in [.env](src/vue/.env)
+2. Follow steps in following section to configure OAuth Client ID for Google docs export. Set it in [.env](src/vue/.env)
 3. Run below script to stop, build and start docker containers.
     ```bash
     ./scripts/rebuild.sh
