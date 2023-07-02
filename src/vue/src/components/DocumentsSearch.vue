@@ -48,8 +48,7 @@ export default {
     async showDocumentContent(docId) {
       try {
         const { title, description } = await this.getDocumentDetails(docId);
-        console.log(title, description);
-
+        
         this.$swal({
           title: title,
           text: description,

@@ -1,9 +1,6 @@
 <template>
   <div class="">
-    <TopBar
-      @patient="patientSelected"
-    >
-    </TopBar>
+    <TopBar @patient="patientSelected"> </TopBar>
     <div v-if="selectedPatientData !== null">
       <SidebarContent
         :activePage="activePage"
@@ -30,14 +27,14 @@
     <div v-else>
       <div class="flex justify-center">
         <div class="p-16">
-          <h2 class="text-3xl font-bold mb-16">Recently Viewed</h2>
+          <h2 class="text-3xl font-bold mb-16">Recently Viewed Patients</h2>
           <div
             v-for="patient in recentPatients"
             :key="patient.id"
             class="mb-12 flex justify-center"
           >
-            <h3 class="text-xl font-medium">{{ patient.name }}</h3>
-            <button>
+            <h3 class="text-xl font-medium">{{ patient.firstName }} {{ patient.lastName }}</h3>
+            <button @click="patientSelected(patient)">
               <font-awesome-icon
                 icon="fa-arrow-up-right-from-square"
                 class="m-1 pl-4 text-gray-500"
@@ -69,20 +66,17 @@ export default {
     DocumentsPage,
     DocumentsSearch,
   },
+  created() {
+    const localStorageKey = "recentlyViewedPatients";
+    const storedPatients =
+      JSON.parse(localStorage.getItem(localStorageKey)) || [];
+    this.recentPatients = storedPatients;
+  },
   data() {
     return {
       activePage: "Interactions",
       selectedPatientData: null,
-      recentPatients: [
-        { id: 1, name: "Liam Johnson" },
-        { id: 2, name: "Olivia Patel" },
-        { id: 3, name: "Noah Nguyen" },
-        { id: 4, name: "Ava Martinez" },
-        { id: 5, name: "Lucas Kim" },
-        { id: 6, name: "Sophia Ali" },
-        { id: 7, name: "Jackson Wong" },
-        { id: 8, name: "Amara Gonzalez" },
-      ],
+      recentPatients: [],
     };
   },
   methods: {
