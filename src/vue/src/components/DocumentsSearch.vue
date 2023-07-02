@@ -8,7 +8,7 @@
           v-model="searchQuery"
           class="border flex rounded w-1/2 px-4 py-2 focus:outline-none focus:ring-2 mr-2 focus:ring-blue-500"
           placeholder="Enter search query"
-          @keyup.enter="performSearch()"
+          @keyup.enter="searchContents()"
         />
         <button
           class="items-center justify-center bg-blue-500 text-white ml-2 py-2 px-2 rounded-md"
@@ -18,34 +18,18 @@
         </button>
       </div>
 
-      <div v-if="searchResults.length > 0" class="mt-6">
-        <h3 class="text-lg font-medium mb-2">Search Results</h3>
-        <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6">
-          <div
-            v-for="result in documents"
-            :key="result.id"
-            class="bg-white shadow-md rounded p-4 flex justify-between"
-          >
-            <div class="flex-grow">
-              <h3 class="text-lg font-medium">{{ result.title }}</h3>
-              <div
-                class="flex items-center space-x-4 text-gray-500 text-sm mt-2"
-              >
-                <p>{{ result.uploadedDate }}</p>
-                <p>Uploaded by {{ result.uploadedBy }}</p>
-              </div>
-            </div>
-            <button
-              class="px-4 py-2 rounded"
-              @click="openDocument(result.id)"
+      <div v-if="searchResponse" class="mt-6">
+        <h3 class="text-lg font-medium mb-2 mt-2">{{ this.searchResponse }}</h3>
+        <h3 class="text-m font-medium mb-2 mt-2">Source:</h3>
+        <ul class="m-2">
+          <li v-for="(docId, index) in sourceDocIds" :key="index" class="mb-2">
+            <a
+              @click="showDocumentContent(docId)"
+              class="text-blue-500 hover:underline"
+              >{{ docId }}</a
             >
-              <font-awesome-icon
-                icon="fa-external-link-alt"
-                class="mr-2"
-              ></font-awesome-icon>
-            </button>
-          </div>
-        </div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -55,43 +39,72 @@
 export default {
   data() {
     return {
-      documents: [
-        {
-          id: 1,
-          title: "Sample Document 1",
-          uploadedDate: "2023-06-01",
-          uploadedBy: "John Doe",
-        },
-        {
-          id: 2,
-          title: "Sample Document 2",
-          uploadedDate: "2023-06-15",
-          uploadedBy: "Jane Smith",
-        },
-      ],
       searchQuery: "",
-      searchResults: [],
+      searchResponse: "",
+      sourceDocIds: [],
     };
   },
   methods: {
-    performSearch() {
-      // Simulating semantic search by filtering documents based on the search query
-      const query = this.searchQuery.toLowerCase().trim();
-      this.searchResults = [];
+    async showDocumentContent(docId) {
+      try {
+        const { title, description } = await this.getDocumentDetails(docId);
+        console.log(title, description);
 
-      if (query.length > 0) {
-        this.documents.forEach((document) => {
-          const title = document.title.toLowerCase();
-          if (title.includes(query)) {
-            this.searchResults.push({
-              id: document.id,
-              title: document.title,
-              source: "Sample Source",
-              documents: [document],
-            });
-          }
+        this.$swal({
+          title: title,
+          text: description,
+          confirmButtonText: "Close",
+          confirmButtonColor: "#2563EB",
         });
+      } catch (error) {
+        console.log("error", error);
       }
+    },
+    async getDocumentDetails(id) {
+      try {
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", "Basic U3VwZXJVc2VyOlNZUw==");
+
+        const requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow",
+        };
+
+        const response = await fetch(
+          `/fhir/api/documentReference/${id}`,
+          requestOptions
+        );
+        const result = await response.json();
+        const documents = result[0];
+        const blob = JSON.parse(atob(documents.base64payload));
+        return { title: blob.title, description: blob.summary };
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    searchContents() {
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", "Basic U3VwZXJVc2VyOlNZUw==");
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify({
+          query: this.searchQuery,
+        }),
+        redirect: "follow",
+      };
+
+      fetch(`/fhir/api/queryDocs`, requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          this.searchResponse = result.response;
+          this.sourceDocIds = result.sourceDocIds;
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
     },
     formatDate(dateString) {
       const options = { year: "numeric", month: "long", day: "numeric" };

@@ -185,7 +185,6 @@ export default {
             documents[i]['title'] = blob.title;
           }
           this.documents = documents;
-          console.log(documents)
         })
         .catch((error) => {
           console.log("error", error);
