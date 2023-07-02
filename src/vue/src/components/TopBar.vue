@@ -1,8 +1,8 @@
 <template>
-  <div class="topbar bg-gray-200 text-gray-800 flex items-center px-4 py-2">
+  <div class="topbar bg-gray-100 border text-gray-800 flex items-center px-4 py-2">
     <div class="flex items-center">
-      <img src="../assets/logo.png" alt="Logo" class="w-8 h-8 mr-2" />
-      <h1 class="text-xl font-bold">AI Voice to Summary</h1>
+      <img src="../assets/logo.png" alt="Logo" class="w-8 h-8 ml-4 mr-2" />
+      <h1 class="text-xl font-bold">Transcribe-Summarize-Export</h1>
     </div>
     <div class="relative flex items-center justify-center flex-grow">
       <input
@@ -10,7 +10,7 @@
         id="patientSearch"
         type="text"
         class="form-input block w-1/2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        placeholder="Enter patient name"
+        placeholder="Enter patient name or id"
         @input="search"
       />
       <ul
@@ -37,12 +37,6 @@
 
 <script>
 export default {
-  props: {
-    activeTopPage: {
-      type: String,
-      required: true,
-    },
-  },
   computed: {
     filteredPatients() {
       if (this.searchQuery) {
@@ -71,7 +65,6 @@ export default {
   methods: {
     selectPatient(patient) {
       this.selectedPatient = patient;
-      console.log("selected");
       this.searchQuery = "";
       this.$emit("patient", this.selectedPatient);
     },

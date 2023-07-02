@@ -10,6 +10,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.4.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "axios": "^1.4.0",
@@ -17,7 +18,7 @@
     "http-proxy-middleware": "^2.0.6",
     "vue": "^3.2.13",
     "vue-audio-recorder": "^3.0.1",
-    "vue3-easy-data-table": "^1.5.45"
+    "vue3-easy-data-table": "^1.5.47"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

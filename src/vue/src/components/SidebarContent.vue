@@ -2,15 +2,16 @@
   <div>
     <div class="flex h-screen overflow-hidden">
       <!-- Sidebar -->
-      <div class="sidebar bg-gray-200 text-gray-800 flex-none">
-        <hr class="border-t border-gray-300" />
+      <div class="sidebar bg-gray-100 text-gray-800 border flex-none">
+        <!-- <hr class="border-t border-gray-300" /> -->
         <div class="p-4">
-          <div class="max-w-sm mx-auto">
+          <div class="flex max-w-sm mx-auto">
+            <font-awesome-icon icon="far fa-user" class="mt-3 w-6 h-6 text-gray-800"></font-awesome-icon>
             <div class="ml-4">
               <p class="text-lg font-semibold">
                 {{ activePatient.firstName }} {{ activePatient.lastName }}
               </p>
-              <p class="text-sm text-gray-600">ID: {{ activePatient.id }}</p>
+              <p class="text-sm text-gray-500">ID: {{ activePatient.id }}</p>
             </div>
           </div>
           <hr class="my-4 border-t border-gray-300" />
@@ -63,12 +64,12 @@
                   icon="fa-calendar"
                   class="mr-2"
                 ></font-awesome-icon>
-                Visits
+                Encounters
               </a>
             </li>
           </ul>
           <hr class="my-4 border-t border-gray-300" />
-          <p class="font-bold mb-4"> Documents</p>
+          <p class="font-bold mb-4">Documents</p>
           <ul class="space-y-2">
             <li>
               <a

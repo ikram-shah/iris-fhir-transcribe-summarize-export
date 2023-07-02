@@ -1,9 +1,9 @@
 <template>
-  <div class="container mx-auto p-8">
+  <div class="container p-16">
     <EasyDataTable
       :headers="headers"
       :items="observations"
-      :rows-per-page="10"
+      :rows-per-page="15"
       table-class-name="custom-table" 
     >
     </EasyDataTable>
@@ -26,7 +26,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.activePatient.id);
     this.getAllObservationsForID(this.activePatient.id);
   },
   props: {

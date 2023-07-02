@@ -1,25 +1,42 @@
 <template>
   <div class="container mx-auto p-16">
     <!-- Previous Documents -->
-    <button ref="googleLoginBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
+    <button
+      ref="googleLoginBtn"
+      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+    >
       Export to Google Sheets
     </button>
-    <div class="grid grid-cols-2 gap-8">
-      <div v-for="document in documents" :key="document.id"
-        class="bg-white shadow-md rounded p-4 flex items-center justify-between">
+    <div class="mt-4 grid grid-cols-2 gap-8">
+      <div
+        v-for="document in documents"
+        :key="document.id"
+        class="bg-white shadow-md rounded p-4 flex items-center justify-between"
+      >
         <div class="flex-grow">
           <h3 class="text-lg font-medium">{{ document.title }}</h3>
-          <div class="flex items-center space-x-4 text-gray-500 text-sm mt-2">
-            <p>{{ document.id }}</p>
-            <p>{{ document.updatedDate }}</p>
-            <p>{{ document.practitionerId }}</p>
+          <p class="mb-6 pl-4">
+            {{ trimText(document.base64payload) }}
+          </p>
+          <div class="items-center text-gray-500 text-sm m-2">
+            <p class="m-2">ID: {{ document.id }}</p>
+            <p class="m-2">
+              Updated On: {{ formatDate(document.updatedDate) }}
+            </p>
+            <p class="m-2">Added By: {{ document.practitionerId }}</p>
           </div>
         </div>
-        <button class="px-4 py-2 rounded">
-          <font-awesome-icon icon="fa-file-text" class="mr-2 text-blue-500"></font-awesome-icon>
+        <button>
+          <font-awesome-icon
+            icon="fa-file-text"
+            class="m-4 w-8 h-8 text-blue-500"
+          ></font-awesome-icon>
         </button>
-        <button class="px-4 py-2 rounded">
-          <font-awesome-icon icon="fa-external-link-alt" class="mr-2"></font-awesome-icon>
+        <button>
+          <font-awesome-icon
+            icon="fa-external-link-alt"
+            class="m-4 w-6 h-6"
+          ></font-awesome-icon>
         </button>
       </div>
     </div>
@@ -36,9 +53,15 @@ export default {
       searchResults: [],
     };
   },
+  props: {
+    activePatient: {
+      type: Object,
+      required: true,
+    },
+  },
   mounted() {
     this.loginInit(this.gClientId);
-    this.getDocuments(1);
+    this.getDocuments(this.activePatient.id);
   },
   methods: {
     loginInit(gClientId) {
@@ -115,9 +138,12 @@ export default {
         });
       }
     },
-    getFirstFourLines(content) {
-      const lines = content.split("\n");
-      return lines.slice(0, 4).join("\n");
+    trimText(text) {
+      let trimmedText = text.slice(0, 125);
+      if (text.length > 100) {
+        trimmedText += "...";
+      }
+      return trimmedText;
     },
     getDocuments(id) {
       var myHeaders = new Headers();
@@ -139,8 +165,7 @@ export default {
         });
     },
     formatDate(dateString) {
-      const options = { year: "numeric", month: "long", day: "numeric" };
-      return new Date(dateString).toLocaleDateString(undefined, options);
+      return new Date(dateString).toLocaleString();
     },
   },
 };
