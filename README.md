@@ -6,13 +6,13 @@
 
 ## Overview
 
-This is a full-stack application that allows practitioners and other clinicians to record voice notes linked to a subject and also export them to Google Docs. 
+This is a full-stack application that allows practitioners and other clinicians to record voice notes linked to a subject and also export them to Google Docs/Sheets. 
 
 1. The UI enables voice recording and the audio is transcribed to text using **Open AI Whisper API**.
 2. Then the notes are summarized using **Open AI text-davinci-003** model and stored as **Document References** in FHIR server. 
-3. Finally, there is an option to export the stored documents to **Google Docs** in an account of user's choice. 
+3. Finally, there is an option to export the stored documents to **Google Docs** in an account of user's choice. Other data like Observations can be exported to **Google Sheets**.
 
-> **Note** - This implements a [Community idea](https://ideas.intersystems.com/ideas/DPI-I-197)💡. Docs export is directly handled via REST api in IRIS now. It's not an interoperability adapter yet and it's WIP.
+> **Note** - This implements a [Community idea](https://ideas.intersystems.com/ideas/DPI-I-197)💡. Docs and Sheets export is directly handled via REST api in IRIS now. It's not an interoperability adapter yet and it's WIP.
 
 The application also acts as a dashboard to view patient and other information like observations and encounters.
 
@@ -20,8 +20,7 @@ The frontend UI is built as a **Vue.js** app. The backend is powered by **IRIS R
 
 ## Build and run
 1. Refer [here](https://www.howtogeek.com/885918/how-to-get-an-openai-api-key/) to create an OpenAI API key. This is used in the transcription and summarizing the voice notes features. Set the key in [.env](.env) for frontend.
-    a. 
-2. Follow steps in following section to configure OAuth Client ID for Google docs export. Set it in [.env](.env).
+2. Follow steps in following section to configure OAuth Client ID for Google docs/sheets export. Set it in [.env](.env).
 3. Run below script to start frontend and backend apps. UI hot reloads, so need to rebuild for every change. But backend needs a rebuild every time.
     ```bash
     ./scripts/rebuild.sh
