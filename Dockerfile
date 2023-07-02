@@ -3,6 +3,7 @@ FROM $IMAGE
 
 ARG openai_api_key
 ENV OPENAI_API_KEY $openai_api_key
+RUN echo $OPENAI_API_KEY
 
 WORKDIR /home/irisowner/irisdev
 #RUN chown ${ISC_PACKAGE_MGRUSER}:${ISC_PACKAGE_IRISGROUP} /opt/irisapp

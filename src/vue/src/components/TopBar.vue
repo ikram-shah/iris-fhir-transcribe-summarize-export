@@ -21,6 +21,8 @@
         </li>
       </ul>
     </div>
+    <button ref="googleLoginBtn">
+    </button>
   </div>
 </template>
 
@@ -42,16 +44,52 @@ export default {
     },
   },
   mounted() {
+    this.loginInit(this.gClientId);
     this.fetchAllPatients();
   },
   data() {
     return {
+      gClientId: process.env.G_CLIENT_ID,
       searchQuery: "",
       patients: [],
       selectedPatient: null,
     };
   },
   methods: {
+    loginInit(gClientId) {
+      this.initGoogleOAuth(gClientId);
+      this.renderGoogleLoginButton();
+    },
+    initGoogleOAuth(gClientId) {
+      this.gClient = window.google.accounts.oauth2.initTokenClient({
+        client_id: gClientId,
+        scope: "https://www.googleapis.com/auth/documents",
+        callback: this.handleOauthToken,
+      });
+      window.google.accounts.id.initialize({
+        client_id: gClientId,
+        callback: this.handleCredentialResponse,
+      });
+    },
+    renderGoogleLoginButton() {
+      window.google.accounts.id.renderButton(this.$refs.googleLoginBtn, {
+        text: "Login",
+        size: "large",
+        theme: "filled_blue", // options: filled_black | outline | filled_blue
+      });
+    },
+    async handleCredentialResponse(response) {
+      try {
+        this.gClient.requestAccessToken();
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async handleOauthToken(response) {
+      this.oAuth = response["access_token"];
+      localStorage.setItem("oAuth", this.oAuth);
+    },
     selectPatient(patient) {
       this.selectedPatient = patient;
       this.searchQuery = "";

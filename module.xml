@@ -29,7 +29,7 @@
         MatchRoles=":${dbrole}"
         PasswordAuthEnabled="1"
         UnauthenticatedEnabled="0"
-        DispatchClass="fhir.Patients"
+        DispatchClass="fhir.Rest"
         ServeFiles="1"
         CookiePath="/fhir/api"
         UseCookies="2"

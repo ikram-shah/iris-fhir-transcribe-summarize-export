@@ -1,4 +1,4 @@
-Class fhir.Patients Extends %CSP.REST
+Class fhir.Rest Extends %CSP.REST
 {
 
 XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]

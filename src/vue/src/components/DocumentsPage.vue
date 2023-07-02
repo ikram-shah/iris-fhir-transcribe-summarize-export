@@ -1,9 +1,6 @@
 <template>
   <div class="container mx-auto p-16">
     <!-- Previous Documents -->
-    <button ref="googleLoginBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
-      Export to Google Sheets
-    </button>
     <div class="mt-4 grid grid-cols-2 gap-8">
       <div v-for="document in documents" :key="document.id"
         class="bg-white shadow-md rounded p-4 flex items-center justify-between">
@@ -37,10 +34,10 @@ import { PDFDocument, StandardFonts } from "pdf-lib";
 export default {
   data() {
     return {
-      gClientId: process.env.G_CLIENT_ID,
       documents: [],
       searchQuery: "",
       searchResults: [],
+      oAuth: ""
     };
   },
   props: {
@@ -50,44 +47,10 @@ export default {
     },
   },
   mounted() {
-    this.loginInit(this.gClientId);
     this.getDocuments(this.activePatient.id);
+    this.oAuth = localStorage.getItem('oAuth');
   },
   methods: {
-    loginInit(gClientId) {
-      this.initGoogleOAuth(gClientId);
-      this.renderGoogleLoginButton();
-    },
-    initGoogleOAuth(gClientId) {
-      this.gClient = window.google.accounts.oauth2.initTokenClient({
-        client_id: gClientId,
-        scope: "https://www.googleapis.com/auth/documents",
-        callback: this.handleOauthToken,
-      });
-      window.google.accounts.id.initialize({
-        client_id: gClientId,
-        callback: this.handleCredentialResponse,
-      });
-    },
-    renderGoogleLoginButton() {
-      window.google.accounts.id.renderButton(this.$refs.googleLoginBtn, {
-        text: "Login",
-        size: "large",
-        theme: "filled_blue", // options: filled_black | outline | filled_blue
-      });
-    },
-    async handleCredentialResponse(response) {
-      try {
-        this.gClient.requestAccessToken();
-        console.log(response);
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    async handleOauthToken(response) {
-      this.oAuth = response["access_token"];
-      localStorage.setItem("oAuth", this.oAuth);
-    },
     createDocument(title, summary) {
       const requestOptions = {
         method: "POST",
