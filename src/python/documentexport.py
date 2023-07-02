@@ -80,12 +80,14 @@ def CreateGoogleDoc(title, body, token):
     return json.dumps(resp)
 
 
-def CreateGoogleSheet(title, rows, token):
+def CreateGoogleSheet(title, rowsJson, token):
     body = json.dumps({
         "properties": {
             "title": title
         }
     })
+
+    rows = json.loads(rowsJson)
     # Send the API request to create the sheet
     response = requests.post(
         "https://sheets.googleapis.com/v4/spreadsheets",
@@ -97,7 +99,8 @@ def CreateGoogleSheet(title, rows, token):
     resp = dict()
 
     if response.status_code == 200:
-        resp["googleSheetId"] = response["spreadsheetId"]
+        sheetId = response.json()["spreadsheetId"]
+        resp["googleSheetId"] = sheetId
         resp["status"] = "Created sheet with title successfully."
     else:
         resp["status"] = "Failed to create Google Sheet."

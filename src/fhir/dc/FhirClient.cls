@@ -96,7 +96,7 @@ ClassMethod ExportSheet(title As %String, rows As %DynamicObject, token As %Stri
 	
 	//Call Embedded Python Function to export sheets
 	Set documentexport = ##class(%SYS.Python).Import("documentexport")
-	Set data = documentexport.CreateGoogleSheet(title, rows, token)
+	Set data = documentexport.CreateGoogleSheet(title, rows.%ToJSON(), token)
 
 	Return data
 }
