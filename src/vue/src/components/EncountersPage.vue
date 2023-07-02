@@ -1,5 +1,5 @@
 <template>
-  <div class="container m-8 p-8">
+  <div class="container-max m-8 p-8">
     <!-- Search Bar -->
     <div class="w-1/2 mb-8">
       <input
@@ -24,14 +24,14 @@
         <div class="text-sm text-gray-500 mb-2">
           {{ encounter.practitionerName }} ({{ encounter.practitionerId }})
         </div>
-        <div class="flex justify-between mb-2">
-          <div class="text-sm text-gray-500 mb-2">
-            Start: {{ formatDate(encounter.start) }}
-          </div>
-          <div class="text-sm text-gray-500 mb-2">
-            End: {{ formatDate(encounter.end) }}
-          </div>
+
+        <div class="text-sm text-gray-500">
+          Start: {{ formatDate(encounter.start) }}
         </div>
+        <div class="text-sm text-gray-500 mb-2">
+          End: {{ formatDate(encounter.end) }}
+        </div>
+
         <div class="text-sm text-gray-500">ID: {{ encounter.id }}</div>
         <div class="text-sm text-gray-500">
           Updated On: {{ formatDate(encounter.updatedDate) }}
@@ -40,7 +40,10 @@
     </div>
 
     <!-- No Results Message -->
-    <div v-if="filteredEncounters.length === 0" class="justify-between text-left">
+    <div
+      v-if="filteredEncounters.length === 0"
+      class="justify-between text-left"
+    >
       No results found.
     </div>
   </div>

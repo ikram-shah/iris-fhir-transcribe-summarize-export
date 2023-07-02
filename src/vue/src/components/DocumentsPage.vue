@@ -1,11 +1,11 @@
 <template>
   <div class="container mx-auto p-16">
     <!-- Previous Documents -->
-    <div class="mt-4 grid grid-cols-2 gap-8">
+    <div class="mt-4 grid grid-cols-1 gap-8">
       <div v-for="document in documents" :key="document.id"
         class="bg-white shadow-md rounded p-4 flex items-center justify-between">
         <div class="flex-grow">
-          <h3 class="text-lg font-medium">{{ document.title }}</h3>
+          <h3 class="text-lg font-medium pl-4 pb-2">{{ document.title }}</h3>
           <p class="mb-6 pl-4">
             {{ trimText(document.summary) }}
           </p>
@@ -58,7 +58,7 @@ export default {
           Authorization: "Basic U3VwZXJVc2VyOlNZUw==",
         },
         body: JSON.stringify({
-          patientId: 1,
+          patientId: this.activePatient.id,
           title: title,
           body: btoa(summary),
           token: this.oAuth,
