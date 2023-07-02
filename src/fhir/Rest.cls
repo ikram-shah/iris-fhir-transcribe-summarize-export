@@ -10,7 +10,9 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <Route Url="/patient/:patientId" Method="GET" Call="getPatient" Cors="true"/>
 <Route Url="/documentReference/:documentReferenceId" Method="GET" Call="getDocumentReference" Cors="true"/>
 <Route Url="/exportDocument" Method="POST" Call="exportDocument" Cors="true"/>
+<Route Url="/exportSheet" Method="POST" Call="exportSheet" Cors="true"/>
 <Route Url="/summarize" Method="POST" Call="summarize" Cors="true"/>
+<Route Url="/queryDocs" Method="POST" Call="query" Cors="true"/>
 </Routes>
 }
 
@@ -142,6 +144,56 @@ ClassMethod exportDocument() As %Status
     Quit $$$OK
 }
 
+ClassMethod exportSheet() As %Status
+{
+    Set %response.ContentType = "application/json"
+
+    If '..GetJSONFromRequest(.obj) {
+		Set %response.Status = ..#HTTP400BADREQUEST
+		Set error = {"errormessage": "JSON not found"}
+		Write error.%ToJSON()
+		Quit $$$OK
+	}
+	
+	If '..ValidateJSONExportSheet(obj,.error) {
+		Set %response.Status = ..#HTTP400BADREQUEST
+		Write error.%ToJSON()
+		Quit $$$OK
+	}
+    Set tSC = $SYSTEM.Status.OK()
+
+    Set resp = ##class(fhir.dc.FhirClient).ExportSheet(obj.title, obj.rows, obj.token)
+
+    Write resp
+
+    Quit $$$OK
+}
+
+ClassMethod query() As %Status
+{
+   Set %response.ContentType = "application/json"
+
+    If '..GetJSONFromRequest(.obj) {
+		Set %response.Status = ..#HTTP400BADREQUEST
+		Set error = {"errormessage": "JSON not found"}
+		Write error.%ToJSON()
+		Quit $$$OK
+	}
+	
+	If '..ValidateJSONQuery(obj,.error) {
+		Set %response.Status = ..#HTTP400BADREQUEST
+		Write error.%ToJSON()
+		Quit $$$OK
+	}
+    Set tSC = $SYSTEM.Status.OK()
+
+    Set resp = ##class(fhir.dc.FhirClient).QueryDocs(obj.query)
+
+    Write resp
+
+    Quit $$$OK
+}
+
 // Helper methods
 ClassMethod GetJSONFromRequest(Output obj As %DynamicObject) As %Boolean
 {
@@ -170,6 +222,40 @@ ClassMethod ValidateJSONExportDocument(obj As %DynamicObject, Output error As %D
 
     If obj.%Get("token") = "" {
 		Set error.errormessage = "oAuth token is missing"
+		Quit 0
+	}
+	
+	Quit 1
+}
+
+ClassMethod ValidateJSONExportSheet(obj As %DynamicObject, Output error As %DynamicObject) As %Boolean
+{
+	Set error = {}
+
+	If obj.%Get("title") = "" {
+		Set error.errormessage = "title is missing"
+		Quit 0
+	}
+	
+	If obj.%Get("rows") = "" {
+		Set error.errormessage = "rows is missing"
+		Quit 0
+	}
+
+    If obj.%Get("token") = "" {
+		Set error.errormessage = "oAuth token is missing"
+		Quit 0
+	}
+	
+	Quit 1
+}
+
+ClassMethod ValidateJSONQuery(obj As %DynamicObject, Output error As %DynamicObject) As %Boolean
+{
+	Set error = {}
+	
+	If obj.%Get("query") = "" {
+		Set error.errormessage = "query is missing"
 		Quit 0
 	}
 	

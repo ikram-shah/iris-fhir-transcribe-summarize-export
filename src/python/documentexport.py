@@ -13,7 +13,10 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 def Summarize(text):
     response = openai.Completion.create(
         model="text-davinci-003",
-        prompt="summarize this and give title in json format - " + text,
+        prompt="Summarize the following text and give title and summary in json format. \
+                Sample output - {\"title\": \"some-title\", \"summary\": \"some-summary\"}.\
+                Input - "
+        + text,
         temperature=1,
         max_tokens=300,
         top_p=1,
@@ -73,5 +76,50 @@ def CreateGoogleDoc(title, body, token):
         resp["status"] = "Updated doc with text successfully."
     else:
         resp["status"] = "Failed to update Google Doc."
+
+    return json.dumps(resp)
+
+
+def CreateGoogleSheet(title, rows, token):
+    body = json.dumps({
+        "properties": {
+            "title": title
+        }
+    })
+    # Send the API request to create the sheet
+    response = requests.post(
+        "https://sheets.googleapis.com/v4/spreadsheets",
+        headers={'Authorization': f'Bearer {token}',
+                 'Content-Type': 'application/json'},
+        data=body
+    )
+
+    resp = dict()
+
+    if response.status_code == 200:
+        resp["googleSheetId"] = response["spreadsheetId"]
+        resp["status"] = "Created sheet with title successfully."
+    else:
+        resp["status"] = "Failed to create Google Sheet."
+
+    body = json.dumps({
+        "range": "Sheet1!A1",
+        "majorDimension": "ROWS",
+        "values": rows
+    })
+
+    # Send the API request to create rows in the sheet
+    response = requests.put(
+        "https://sheets.googleapis.com/v4/spreadsheets/" + resp["googleSheetId"] +
+        "/values/Sheet1!A1?valueInputOption=USER_ENTERED",
+        headers={'Authorization': f'Bearer {token}',
+                 'Content-Type': 'application/json'},
+        data=body
+    )
+
+    if response.status_code == 200:
+        resp["status"] = "Updated sheet with rows successfully."
+    else:
+        resp["status"] = "Failed to update Google Sheet."
 
     return json.dumps(resp)

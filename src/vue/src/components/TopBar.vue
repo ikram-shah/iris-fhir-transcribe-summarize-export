@@ -63,7 +63,7 @@ export default {
     initGoogleOAuth(gClientId) {
       this.gClient = window.google.accounts.oauth2.initTokenClient({
         client_id: gClientId,
-        scope: "https://www.googleapis.com/auth/documents",
+        scope: "https://www.googleapis.com/auth/documents https://www.googleapis.com/auth/spreadsheets",
         callback: this.handleOauthToken,
       });
       window.google.accounts.id.initialize({

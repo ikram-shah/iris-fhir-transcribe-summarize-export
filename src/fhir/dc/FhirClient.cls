@@ -91,11 +91,30 @@ ClassMethod ExportDocument(title As %String, body As %String, token As %String) 
 	Return data
 }
 
+ClassMethod ExportSheet(title As %String, rows As %DynamicObject, token As %String) As %Status
+{
+	
+	//Call Embedded Python Function to export sheets
+	Set documentexport = ##class(%SYS.Python).Import("documentexport")
+	Set data = documentexport.CreateGoogleSheet(title, rows, token)
+
+	Return data
+}
+
 ClassMethod Summarize(text As %String) As %Status
 { 
 	//Call Embedded Python Function to summarize text
 	Set documentexport = ##class(%SYS.Python).Import("documentexport")
 	Set data = documentexport.Summarize(text) 
+
+	Return data
+}
+
+ClassMethod QueryDocs(text As %String) As %Status
+{ 
+	//Call Embedded Python Function to query stored docs
+	Set irisfhirclient = ##class(%SYS.Python).Import("irisfhirclient")
+	Set data = irisfhirclient.QueryDocs(text)
 
 	Return data
 }

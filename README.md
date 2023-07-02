@@ -22,9 +22,9 @@ The frontend UI is built as a **Vue.js** app. The backend is powered by **IRIS R
 1. Refer [here](https://www.howtogeek.com/885918/how-to-get-an-openai-api-key/) to create an OpenAI API key. This is used in the transcription and summarizing the voice notes features. Set the key in [.env](.env) for frontend.
     a. 
 2. Follow steps in following section to configure OAuth Client ID for Google docs export. Set it in [.env](.env).
-3. Run below script to start frontend and backend apps. UI hot reloads, so need to rebuild for every change. But backend needs a rebuild every time. **Notice the preceding . in the command**.
+3. Run below script to start frontend and backend apps. UI hot reloads, so need to rebuild for every change. But backend needs a rebuild every time.
     ```bash
-    . ./scripts/rebuild.sh
+    ./scripts/rebuild.sh
     ```
 
 ## Useful Links

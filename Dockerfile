@@ -7,10 +7,11 @@ RUN echo $OPENAI_API_KEY
 
 WORKDIR /home/irisowner/irisdev
 #RUN chown ${ISC_PACKAGE_MGRUSER}:${ISC_PACKAGE_IRISGROUP} /opt/irisapp
+RUN mkdir /home/irisowner/irisdev/summaries/
 
 RUN pip3 install fhirpy
 RUN pip3 install tabulate
-RUN pip3 install openai
+RUN pip3 install openai langchain chromadb tiktoken
 
 # run iris and initial 
 RUN --mount=type=bind,src=.,dst=. \
