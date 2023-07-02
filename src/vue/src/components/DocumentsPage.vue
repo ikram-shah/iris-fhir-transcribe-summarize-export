@@ -26,13 +26,13 @@
             <p class="m-2">Added By: {{ document.practitionerId }}</p>
           </div>
         </div>
-        <button>
+        <button @click="createDocument(document.base64payload)">
           <font-awesome-icon
             icon="fa-file-text"
             class="m-4 w-8 h-8 text-blue-500"
           ></font-awesome-icon>
         </button>
-        <button>
+        <button @click="openAsPDF(document.base64payload)">
           <font-awesome-icon
             icon="fa-external-link-alt"
             class="m-4 w-6 h-6"
@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import { PDFDocument, StandardFonts } from "pdf-lib";
+
 export default {
   data() {
     return {
@@ -65,6 +67,10 @@ export default {
   },
   methods: {
     loginInit(gClientId) {
+      this.initGoogleOAuth(gClientId);
+      this.renderGoogleLoginButton();
+    },
+    initGoogleOAuth(gClientId) {
       this.gClient = window.google.accounts.oauth2.initTokenClient({
         client_id: gClientId,
         scope: "https://www.googleapis.com/auth/documents",
@@ -74,10 +80,12 @@ export default {
         client_id: gClientId,
         callback: this.handleCredentialResponse,
       });
+    },
+    renderGoogleLoginButton() {
       window.google.accounts.id.renderButton(this.$refs.googleLoginBtn, {
         text: "Login",
         size: "large",
-        theme: "filled_blue", // option : filled_black | outline | filled_blue
+        theme: "filled_blue", // options: filled_black | outline | filled_blue
       });
     },
     async handleCredentialResponse(response) {
@@ -85,39 +93,102 @@ export default {
         this.gClient.requestAccessToken();
         console.log(response);
       } catch (error) {
-        //on fail do something
-        if (error) console.error(error);
-        else console.error(error);
-        return null;
+        console.error(error);
       }
     },
     async handleOauthToken(response) {
-      try {
-        this.oAuth = response["access_token"];
-        localStorage.setItem("oAuth", this.oAuth);
-        var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Basic U3VwZXJVc2VyOlNZUw==");
+      this.oAuth = response["access_token"];
+      localStorage.setItem("oAuth", this.oAuth);
+    },
+    encodeBase64(string) {
+      const bytes = new TextEncoder().encode(string);
+      const base64String = btoa(String.fromCharCode.apply(null, bytes));
+      return base64String;
+    },
+    createDocument(content) {
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          Authorization: "Basic U3VwZXJVc2VyOlNZUw==",
+        },
+        body: JSON.stringify({
+          patientId: 1,
+          title: "Title",
+          body: this.encodeBase64(content),
+          token: this.oAuth,
+        }),
+      };
 
-        var requestOptions = {
-          method: "POST",
-          headers: myHeaders,
-          body: JSON.stringify({
-            patientId: 1,
-            title: "Random title",
-            docId: 1921,
-            token: this.oAuth,
-          }),
-        };
-        fetch("/fhir/api/exportDocument", requestOptions).then((response) =>
-          response.json()
+      fetch(`/fhir/api/exportDocument`, requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.status == "Updated doc with text successfully.") {
+            let docURL = this.createGoogleDocLink(result.googleDocId);
+            this.$swal({
+              icon: "success",
+              title: "Created Google Docs Successfully.",
+              html: `<a href="${docURL}" target="_blank">${docURL}</a>`,
+              confirmButtonText: "Close",
+              confirmButtonColor: "#2563EB",
+            });
+          } else {
+            this.$swal({
+              icon: "error",
+              title: "Google docs creation failed.",
+              confirmButtonText: "Close",
+              confirmButtonColor: "#2563EB",
+            });
+          }
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+    },
+    createGoogleDocLink(docId) {
+      const baseUrl = "https://docs.google.com/document/d/";
+      const link = `${baseUrl}${docId}`;
+      return link;
+    },
+    async openAsPDF(textContent) {
+      const pdfDoc = await PDFDocument.create();
+      const page = pdfDoc.addPage();
+      const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+      const fontSize = 12;
+
+      const margin = 50;
+      const availableWidth = page.getWidth() - 2 * margin;
+
+      const lines = [];
+      const words = textContent.split(" ");
+
+      let currentLine = words[0];
+      for (let i = 1; i < words.length; i++) {
+        const word = words[i];
+        const width = font.widthOfTextAtSize(
+          currentLine + " " + word,
+          fontSize
         );
-        window.alert("created doc");
-      } catch (error) {
-        //on fail do something
-        if (error) console.error(error);
-        else console.error(error);
-        return null;
+        if (width < availableWidth) {
+          currentLine += " " + word;
+        } else {
+          lines.push(currentLine);
+          currentLine = word;
+        }
       }
+      lines.push(currentLine);
+
+      const startY = page.getHeight() - margin;
+      let currentY = startY;
+      for (const line of lines) {
+        page.drawText(line, { x: margin, y: currentY, size: fontSize, font });
+        currentY -= fontSize;
+      }
+
+      const pdfBytes = await pdfDoc.save();
+      const data = new Blob([pdfBytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(data);
+
+      window.open(url, "_blank");
     },
     performSearch() {
       // Simulating semantic search by filtering documents based on the search query

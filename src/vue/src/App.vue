@@ -13,9 +13,6 @@
         <div v-if="activePage === 'Interactions'">
           <InteractionsPage :activePatient="selectedPatientData" />
         </div>
-        <div v-if="activePage === 'Patients'">
-          <PatientsPage />
-        </div>
         <div v-if="activePage === 'Observations'">
           <ObservationPage :activePatient="selectedPatientData" />
         </div>
@@ -55,7 +52,6 @@
 
 <script>
 import TopBar from "./components/TopBar.vue";
-import PatientsPage from "./components/PatientsPage.vue";
 import InteractionsPage from "./components/InteractionsPage.vue";
 import ObservationPage from "./components/ObservationPage.vue";
 import EncountersPage from "./components/EncountersPage.vue";
@@ -66,7 +62,6 @@ import DocumentsPage from "./components/DocumentsPage.vue";
 export default {
   components: {
     TopBar,
-    PatientsPage,
     InteractionsPage,
     ObservationPage,
     EncountersPage,

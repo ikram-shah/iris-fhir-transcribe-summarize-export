@@ -16,8 +16,10 @@
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
     "http-proxy-middleware": "^2.0.6",
+    "pdf-lib": "^1.17.1",
     "vue": "^3.2.13",
     "vue-audio-recorder": "^3.0.1",
+    "vue-sweetalert2": "^5.0.5",
     "vue3-easy-data-table": "^1.5.47"
   },
   "devDependencies": {
