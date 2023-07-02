@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "bc8a3734-1244-4f2f-adbf-7d025a83f3a7",
-		"name": "IRIS-FHIR-Talk2Doc",
+		"name": "IRIS-FHIR-Transcribe-Summarize-Export",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "2168342"
 	},
@@ -148,7 +148,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"patientId\": 1,\n    \"practitionerId\": 3,\n    \"base64payload\": \"VGhlIHBhdGllbnQgZmVsdCBsaWtlIHRoZXkgd2VyZSB0b28gaW50ZWxsaWdlbnQgYW5kIHdhbnRlZCB0byBmaXggaXQuIFdlIGFuYWx5emVkIGFuZCB2ZXJpZmllZCB0aGVpciBjbGFpbXMuIFN1Y2ggbGV2ZWxzIG9mIGludGVsbGlnZW5jZSBoYXZlIG5vdCBiZWVuIG9ic2VydmVkIGluIGFueSBodW1hbiBiZWZvcmUgYW5kIGl0IGlzIGEgbWluZC1ibG93aW5nIGNhc2UuIFBhdGllbnQgd2lsbCBmb2xsb3cgdXAgYWZ0ZXIgYSB3ZWVrIGFzIHdlIG5lZWQgdGltZSB0byBjb25zdWx0IHBoeXNpY2lhbnMgZnJvbSBvdGhlciBsb2NhdGlvbnMu\",\n    \"mimeType\": \"application/pdf\"\n}",
+							"raw": "{\n    \"patientId\": 1,\n    \"practitionerId\": 3,\n    \"base64payload\": \"eyJzdW1tYXJ5IjoiVGhlIHBhdGllbnQgaGFzIGJlZW4gZXhwZXJpZW5jaW5nIGEgZHVsbCwgZ25hd2luZyBwYWluIGluIHRoZSB1cHBlciBhYmRvbWVuIHRoYXQgd29yc2VucyBhZnRlciBtZWFscyBhbmQgaXMgc29tZXRpbWVzIHJlbGlldmVkIGJ5IGFudGFjaWRzLiBBZGRpdGlvbmFsbHksIHRoZSBwYXRpZW50IGhhcyBleHBlcmllbmNlZCBhIGxvc3Mgb2YgYXBwZXRpdGUsIGZlZWxpbmcgb2YgZnVsbG5lc3MgZXZlbiBhZnRlciBzbWFsbCBtZWFscywgb2NjYXNpb25hbCBlcGlzb2RlcyBvZiBuYXVzZWEsIGFuZCBoYXMgdm9taXRlZCB0d2ljZSBpbiB0aGUgcGFzdCB3ZWVrLiIsInRpdGxlIjoiQWJkb21pbmFsIFBhaW4gYW5kIE5hdXNlYSBQcmVzZW50ZWQgYnkgUGF0aWVudCJ9\",\n    \"mimeType\": \"application/pdf\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -307,6 +307,64 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"title\": \"something\",\n    \"body\": \"VGhlIHBhdGllbnQgZmVsdCBsaWtlIHRoZXkgd2VyZSB0b28gaW50ZWxsaWdlbnQgYW5kIHdhbnRlZCB0byBmaXggaXQuIFdlIGFuYWx5emVkIGFuZCB2ZXJpZmllZCB0aGVpciBjbGFpbXMuIFN1Y2ggbGV2ZWxzIG9mIGludGVsbGlnZW5jZSBoYXZlIG5vdCBiZWVuIG9ic2VydmVkIGluIGFueSBodW1hbiBiZWZvcmUgYW5kIGl0IGlzIGEgbWluZC1ibG93aW5nIGNhc2UuIFBhdGllbnQgd2lsbCBmb2xsb3cgdXAgYWZ0ZXIgYSB3ZWVrIGFzIHdlIG5lZWQgdGltZSB0byBjb25zdWx0IHBoeXNpY2lhbnMgZnJvbSBvdGhlciBsb2NhdGlvbnMu\",\n    \"token\": \"ya29.a0AbVbY6NX0QPdAnIei-LA569LTHsqFurMe4sX-MpKJMKIlp_oLXuFk9XOL8fa8fAFXFO0gzN46Xqj4oAb05k3RH0IiwtEZ2MvsaJeztGcp2BtXswNNBZNbfL5L2DP2zFRU9eiQzdT9h2tjostYvIx74y-_iqxbwaCgYKAbwSARESFQFWKvPl4yJTzQmG_JmVV2eYoVzNFA0165\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:52773/fhir/api/exportDocument",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "52773",
+							"path": [
+								"fhir",
+								"api",
+								"exportDocument"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "export sheets",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "SYS",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "SuperUser",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": " vgbvg",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/fhir+json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"something\",\n    \"rows\": [\n    [\"Item\", \"Cost\", \"Stocked\", \"Ship Date\"],\n    [\"Wheel\", \"$20.50\", \"4\", \"3/1/2016\"],\n    [\"Door\", \"$15\", \"2\", \"3/15/2016\"],\n    [\"Engine\", \"$100\", \"1\", \"3/20/2016\"],\n    [\"Totals\", \"=SUM(B2:B4)\", \"=SUM(C2:C4)\", \"=MAX(D2:D4)\"]\n  ],\n    \"token\": \"ya29.a0AbVbY6NX0QPdAnIei-LA569LTHsqFurMe4sX-MpKJMKIlp_oLXuFk9XOL8fa8fAFXFO0gzN46Xqj4oAb05k3RH0IiwtEZ2MvsaJeztGcp2BtXswNNBZNbfL5L2DP2zFRU9eiQzdT9h2tjostYvIx74y-_iqxbwaCgYKAbwSARESFQFWKvPl4yJTzQmG_JmVV2eYoVzNFA0165\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -665,6 +723,51 @@
 								"patient",
 								"1",
 								"Encounter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Query docs",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "SYS",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "SuperUser",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"query\": \"list nausea cases\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:52773/fhir/api/queryDocs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "52773",
+							"path": [
+								"fhir",
+								"api",
+								"queryDocs"
 							]
 						}
 					},
