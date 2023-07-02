@@ -364,7 +364,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"something\",\n    \"rows\": [\n    [\"Item\", \"Cost\", \"Stocked\", \"Ship Date\"],\n    [\"Wheel\", \"$20.50\", \"4\", \"3/1/2016\"],\n    [\"Door\", \"$15\", \"2\", \"3/15/2016\"],\n    [\"Engine\", \"$100\", \"1\", \"3/20/2016\"],\n    [\"Totals\", \"=SUM(B2:B4)\", \"=SUM(C2:C4)\", \"=MAX(D2:D4)\"]\n  ],\n    \"token\": \"ya29.a0AbVbY6NX0QPdAnIei-LA569LTHsqFurMe4sX-MpKJMKIlp_oLXuFk9XOL8fa8fAFXFO0gzN46Xqj4oAb05k3RH0IiwtEZ2MvsaJeztGcp2BtXswNNBZNbfL5L2DP2zFRU9eiQzdT9h2tjostYvIx74y-_iqxbwaCgYKAbwSARESFQFWKvPl4yJTzQmG_JmVV2eYoVzNFA0165\"\n}",
+							"raw": "{\n    \"title\": \"something\",\n    \"rows\": [\n        [\n            \"Item\",\n            \"Cost\",\n            \"Stocked\",\n            \"Ship Date\"\n        ],\n        [\n            \"Wheel\",\n            \"$20.50\",\n            \"4\",\n            \"3/1/2016\"\n        ],\n        [\n            \"Door\",\n            \"$15\",\n            \"2\",\n            \"3/15/2016\"\n        ],\n        [\n            \"Engine\",\n            \"$100\",\n            \"1\",\n            \"3/20/2016\"\n        ],\n        [\n            \"Totals\",\n            \"=SUM(B2:B4)\",\n            \"=SUM(C2:C4)\",\n            \"=MAX(D2:D4)\"\n        ]\n    ],\n    \"token\": \"ya29.a0AbVbY6Mcl7Hw4Q-sbkBxUhwk5WeBn9LMekxajQsVxBzGtzaEmsQ6owjcOVr_fAgb5Vmpso031cIs2mop6BzhQRIDIXnqIBYS0elFZyeDrQ7Q2IQBR7WrHwEoeijrYT0ogSFa3uKsyou5D3GvAF3xAYgTq7xCaCgYKAZkSARESFQFWKvPlpFRvrcsiTwzRjaUZQ7CTWQ0163\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -372,7 +372,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:52773/fhir/api/exportDocument",
+							"raw": "http://localhost:52773/fhir/api/exportSheet",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -381,7 +381,7 @@
 							"path": [
 								"fhir",
 								"api",
-								"exportDocument"
+								"exportSheet"
 							]
 						}
 					},
