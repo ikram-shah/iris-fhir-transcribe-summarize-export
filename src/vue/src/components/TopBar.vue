@@ -5,26 +5,15 @@
       <h1 class="text-xl font-bold">Transcribe-Summarize-Export</h1>
     </div>
     <div class="relative flex items-center justify-center flex-grow">
-      <input
-        v-model="searchQuery"
-        id="patientSearch"
-        type="text"
+      <input v-model="searchQuery" id="patientSearch" type="text"
         class="form-input block w-1/2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        placeholder="Enter patient name or id"
-        @input="search"
-      />
-      <ul
-        v-if="filteredPatients.length > 0"
+        placeholder="Enter patient name or id" @input="search" />
+      <ul v-if="filteredPatients.length > 0"
         class="absolute mt-2 bg-white border border-gray-300 rounded-md shadow-md dark:bg-gray-800 w-1/2 z-10"
-        style="top: 100%"
-      >
-        <li
-          v-for="patient in filteredPatients"
-          :key="patient.id"
-          @click="selectPatient(patient)"
+        style="top: 100%">
+        <li v-for="patient in filteredPatients" :key="patient.id" @click="selectPatient(patient)"
           :class="{ 'text-blue-500': patient === selectedPatient }"
-          class="py-2 px-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
-        >
+          class="py-2 px-4 cursor-pointer bg-white hover:bg-gray-100 dark:hover:bg-gray-100">
           <div class="flex justify-between">
             <span>{{ patient.firstName }} {{ patient.lastName }}</span>
             <span>{{ patient.id }}</span>

@@ -1,22 +1,16 @@
 <template>
   <div class="container mx-auto p-16">
     <!-- Previous Documents -->
-    <button
-      ref="googleLoginBtn"
-      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
-    >
+    <button ref="googleLoginBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
       Export to Google Sheets
     </button>
     <div class="mt-4 grid grid-cols-2 gap-8">
-      <div
-        v-for="document in documents"
-        :key="document.id"
-        class="bg-white shadow-md rounded p-4 flex items-center justify-between"
-      >
+      <div v-for="document in documents" :key="document.id"
+        class="bg-white shadow-md rounded p-4 flex items-center justify-between">
         <div class="flex-grow">
           <h3 class="text-lg font-medium">{{ document.title }}</h3>
           <p class="mb-6 pl-4">
-            {{ trimText(document.base64payload) }}
+            {{ trimText(document.summary) }}
           </p>
           <div class="items-center text-gray-500 text-sm m-2">
             <p class="m-2">ID: {{ document.id }}</p>
@@ -26,17 +20,11 @@
             <p class="m-2">Added By: {{ document.practitionerId }}</p>
           </div>
         </div>
-        <button @click="createDocument(document.base64payload)">
-          <font-awesome-icon
-            icon="fa-file-text"
-            class="m-4 w-8 h-8 text-blue-500"
-          ></font-awesome-icon>
+        <button @click="createDocument(document.title, document.summary)">
+          <font-awesome-icon icon="fa-file-text" class="m-4 w-8 h-8 text-blue-500"></font-awesome-icon>
         </button>
-        <button @click="openAsPDF(document.base64payload)">
-          <font-awesome-icon
-            icon="fa-external-link-alt"
-            class="m-4 w-6 h-6"
-          ></font-awesome-icon>
+        <button @click="openAsPDF(document.title, document.summary)">
+          <font-awesome-icon icon="fa-external-link-alt" class="m-4 w-6 h-6"></font-awesome-icon>
         </button>
       </div>
     </div>
@@ -100,12 +88,7 @@ export default {
       this.oAuth = response["access_token"];
       localStorage.setItem("oAuth", this.oAuth);
     },
-    encodeBase64(string) {
-      const bytes = new TextEncoder().encode(string);
-      const base64String = btoa(String.fromCharCode.apply(null, bytes));
-      return base64String;
-    },
-    createDocument(content) {
+    createDocument(title, summary) {
       const requestOptions = {
         method: "POST",
         headers: {
@@ -113,8 +96,8 @@ export default {
         },
         body: JSON.stringify({
           patientId: 1,
-          title: "Title",
-          body: this.encodeBase64(content),
+          title: title,
+          body: btoa(summary),
           token: this.oAuth,
         }),
       };
@@ -149,7 +132,7 @@ export default {
       const link = `${baseUrl}${docId}`;
       return link;
     },
-    async openAsPDF(textContent) {
+    async openAsPDF(title, summary) {
       const pdfDoc = await PDFDocument.create();
       const page = pdfDoc.addPage();
       const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
@@ -159,7 +142,10 @@ export default {
       const availableWidth = page.getWidth() - 2 * margin;
 
       const lines = [];
-      const words = textContent.split(" ");
+      const words = summary.split(" ");
+
+      lines.push(title);
+      lines.push("");
 
       let currentLine = words[0];
       for (let i = 1; i < words.length; i++) {
@@ -229,7 +215,14 @@ export default {
       fetch(`/fhir/api/patient/${id}/DocumentReference`, requestOptions)
         .then((response) => response.json())
         .then((result) => {
-          this.documents = result;
+          const documents = result;
+          for (let i = 0; i < documents.length; i++) {
+            const blob = JSON.parse(atob(documents[i].base64payload));
+            documents[i]['summary'] = blob.summary;
+            documents[i]['title'] = blob.title;
+          }
+          this.documents = documents;
+          console.log(documents)
         })
         .catch((error) => {
           console.log("error", error);
