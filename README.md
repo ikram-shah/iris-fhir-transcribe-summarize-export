@@ -6,6 +6,10 @@
 
 ## Overview
 
+
+https://github.com/ikram-shah/iris-fhir-transcribe-summarize-export/assets/20276568/89467c8c-b68e-4155-ac47-3db2f4aaf6ea
+
+
 This is a full-stack application that allows practitioners and other clinicians to record voice notes linked to a subject and also export them to Google Docs/Sheets. 
 
 1. The UI enables voice recording and the audio is transcribed to text using **Open AI Whisper API**.
