@@ -4,11 +4,11 @@
 
  🚀 *Built by [Ikram Shah](https://community.intersystems.com/user/ikram-shah) and [Sowmiya Nagarajan](https://community.intersystems.com/user/sowmiya-nagarajan).*
 
+## Demo
+
+https://github.com/ikram-shah/iris-fhir-transcribe-summarize-export/assets/20276568/9edfedab-2d3d-442c-8853-21123bc49224
+
 ## Overview
-
-
-https://github.com/ikram-shah/iris-fhir-transcribe-summarize-export/assets/20276568/89467c8c-b68e-4155-ac47-3db2f4aaf6ea
-
 
 This is a full-stack application that allows practitioners and other clinicians to record voice notes linked to a subject and also export them to Google Docs/Sheets. 
 
