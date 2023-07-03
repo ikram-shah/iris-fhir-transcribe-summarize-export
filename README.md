@@ -47,7 +47,7 @@ The frontend UI is built as a **Vue.js** app. The backend is powered by **IRIS R
 
 ## Test FHIR REST API
 
-Find the full list of APIs in **[Postman Collection](other/IRIS-FHIR-Talk2Doc.postman_collection.json)**.
+Find the full list of APIs in **[Postman Collection](other/IRIS-FHIR-Transcribe-Summarize-Export.postman_collection.json)**.
 
 Basic Auth credentials, username - `SuperUser`, password - `SYS`. 
 
