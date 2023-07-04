@@ -1,6 +1,7 @@
 # IRIS FHIR Transcribe-Summarize-Export
 
-![Quality Gate Status](https://github.com/ikram-shah/iris-fhir-transcribe-summarize-export/actions/workflows/objectscript-quality.yml/badge.svg)
+[![Gitter](https://img.shields.io/badge/Available%20on-Intersystems%20Open%20Exchange-00b2a9.svg)](https://openexchange.intersystems.com/package/IRIS-FHIR-Transcribe-Summarize-Export)
+[![Quality Gate Status](https://github.com/ikram-shah/iris-fhir-transcribe-summarize-export/actions/workflows/objectscript-quality.yml/badge.svg)](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community/iris-fhir-transcribe-summarize-export)
 
 💻  Contributors - [Ikram Shah](https://community.intersystems.com/user/ikram-shah) and [Sowmiya Nagarajan](https://community.intersystems.com/user/sowmiya-nagarajan).
 
@@ -23,6 +24,32 @@ This is a full-stack application that allows practitioners and other clinicians 
 The application also acts as a dashboard to view patient and other information like observations and encounters.
 
 The frontend UI is built as a [Vue.js](src/vue) app. The backend is powered by [IRIS REST](src/fhir/Rest.cls) api and there is an underlying FHIR server running to store all data. The application uses [embedded-python](src/python) to connect to FHIR api via `fhirpy` module.
+
+## Folder Structure
+
+```
+iris-fhir-transcribe-summarize-export/
+├──src
+│   ├── fhir/
+│   │   └── ...
+│   ├── python/                  //backend
+│   │   └── ...
+│   ├── vue/                     //frontend
+│   │   ├── src/
+│   │   ├── .env                 //environment file to add the openai_api_key and google_client_id
+│   │   └── ...
+├── Other/
+│   └── IRIS-FHIR-...            //postman collection
+├── Scripts/
+│   ├── iris.script
+│   ├── rebuild.sh
+│   └── synthea-loader.sh
+├── Scripts/
+├── docker-compose.yml
+├── Dockerfile
+├── README.md
+└── LICENSE
+```
 
 ## Build and run
 1. Refer [here](https://www.howtogeek.com/885918/how-to-get-an-openai-api-key/) to create an OpenAI API key. This is used in the transcription and summarizing the voice notes features. Set the key in [.env](src/vue/.env) for frontend.
@@ -51,6 +78,8 @@ The frontend UI is built as a [Vue.js](src/vue) app. The backend is powered by [
 
 Find the full list of APIs in **[Postman Collection](other/IRIS-FHIR-Transcribe-Summarize-Export.postman_collection.json)**.
 
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://god.gw.postman.com/run-collection/4063768-a7212431-7f08-4c21-98e9-50910ec4de87?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D4063768-a7212431-7f08-4c21-98e9-50910ec4de87%26entityType%3Dcollection%26workspaceId%3D25acb8ff-3238-4dda-9e3c-e63d0b25c0c3)
+
 Basic Auth credentials, username - `SuperUser`, password - `SYS`. 
 
 ## Test IRIS commands
@@ -65,3 +94,9 @@ Uncomment `print(rows)` in [irisfhirclient](src/python/irisfhirclient.py) to vie
     do ##class(fhir.dc.FhirClient).GetResource("Patient")
     do ##class(fhir.dc.FhirClient).GetPatientResources("Observation","1")
     ```
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+You can find the full text of the license in the [LICENSE](LICENSE) file.
+
