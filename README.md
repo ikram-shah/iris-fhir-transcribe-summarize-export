@@ -94,6 +94,19 @@ Uncomment `print(rows)` in [irisfhirclient](src/python/irisfhirclient.py) to vie
     do ##class(fhir.dc.FhirClient).GetResource("Patient")
     do ##class(fhir.dc.FhirClient).GetPatientResources("Observation","1")
     ```
+
+## Run Unit Tests
+1. Exec into container
+    ```bash
+    docker-compose exec iris iris session iris
+    ```
+2. IRIS commands
+    ```bash
+    zn "FHIRSERVER"
+    Set ^UnitTestRoot = "/irisdev/app/src"
+    Do ##class(%UnitTest.Manager).RunTest("fhir","/loadudl")
+    ```
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).

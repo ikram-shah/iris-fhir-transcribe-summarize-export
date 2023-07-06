@@ -8,6 +8,7 @@
       <Keywords>FHIR,Server</Keywords>
       <Packaging>module</Packaging>
     <SourcesRoot>src</SourcesRoot>
+    <UnitTest Name="/src" Package="UnitTests" Phase="test"/>	    
     <FileCopy Name="src/python/" Target="${mgrdir}python/"/>   
     <Invokes>
     <Invoke Class="fhir.setup.Setup" Method="SetupFHIRServer" Phase="Activate" When="After" ></Invoke>
@@ -15,14 +16,6 @@
     </Invokes>
     <Resource Name="fhir.PKG"/>
     <FileCopy Name="data/fhir/" Target="${mgrdir}test-data-fhir/"/>
-      <CSPApplication
-        Url="/talk2doc/"
-        SourcePath="/src/vue/dist/"
-        DeployPath="{$cspdir}/src/vue/dist/"
-        ServeFiles="1"
-        Recurse="1"
-        CookiePath="/talk2doc/"
-       />
        <CSPApplication 
         Url="/fhir/api"
         Recurse="1"
