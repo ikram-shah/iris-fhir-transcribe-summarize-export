@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-  <Document name="transcribe-summarize-export.ZPM">
+  <Document name="iris-fhir-transcribe-summarize-export.ZPM">
     <Module>
-      <Name>transcribe-summarize-export</Name>
+      <Name>iris-fhir-transcribe-summarize-export</Name>
       <Version>1.2.1</Version>
-      <Description>InterSystems FHIR Server with a demo frontend</Description>
+      <Description>Full stack app to input, store and search clinical documents</Description>
       <Keywords>FHIR,Server</Keywords>
       <Packaging>module</Packaging>
     <SourcesRoot>src</SourcesRoot>
